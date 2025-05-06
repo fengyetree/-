@@ -56,34 +56,34 @@ export default function Navbar() {
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-8">
           <Link href="/">
-            <a className="text-[#333333] hover:text-[#1E88E5] font-medium">首页</a>
+            <div className="text-[#333333] hover:text-[#1E88E5] font-medium cursor-pointer">首页</div>
           </Link>
           
           <NavbarLink href="#" text="赛事信息">
-            <Link href="/">
-              <a className="block px-4 py-2 text-sm text-[#333333] hover:bg-[#1E88E5] hover:text-white">全部赛事</a>
+            <Link href="/competitions">
+              <div className="block px-4 py-2 text-sm text-[#333333] hover:bg-[#1E88E5] hover:text-white cursor-pointer">全部赛事</div>
             </Link>
-            <Link href="/">
-              <a className="block px-4 py-2 text-sm text-[#333333] hover:bg-[#1E88E5] hover:text-white">正在报名</a>
+            <Link href="/competitions?status=active">
+              <div className="block px-4 py-2 text-sm text-[#333333] hover:bg-[#1E88E5] hover:text-white cursor-pointer">正在报名</div>
             </Link>
-            <Link href="/">
-              <a className="block px-4 py-2 text-sm text-[#333333] hover:bg-[#1E88E5] hover:text-white">即将开始</a>
+            <Link href="/competitions?status=upcoming">
+              <div className="block px-4 py-2 text-sm text-[#333333] hover:bg-[#1E88E5] hover:text-white cursor-pointer">即将开始</div>
             </Link>
-            <Link href="/">
-              <a className="block px-4 py-2 text-sm text-[#333333] hover:bg-[#1E88E5] hover:text-white">历届赛事</a>
+            <Link href="/competitions?status=past">
+              <div className="block px-4 py-2 text-sm text-[#333333] hover:bg-[#1E88E5] hover:text-white cursor-pointer">历届赛事</div>
             </Link>
           </NavbarLink>
           
-          <Link href="/">
-            <a className="text-[#333333] hover:text-[#1E88E5] font-medium">参赛指南</a>
+          <Link href="/guide">
+            <div className="text-[#333333] hover:text-[#1E88E5] font-medium cursor-pointer">参赛指南</div>
           </Link>
           
-          <Link href="/">
-            <a className="text-[#333333] hover:text-[#1E88E5] font-medium">新闻公告</a>
+          <Link href="/news">
+            <div className="text-[#333333] hover:text-[#1E88E5] font-medium cursor-pointer">新闻公告</div>
           </Link>
           
-          <Link href="/">
-            <a className="text-[#333333] hover:text-[#1E88E5] font-medium">关于我们</a>
+          <Link href="/about">
+            <div className="text-[#333333] hover:text-[#1E88E5] font-medium cursor-pointer">关于我们</div>
           </Link>
         </div>
         
@@ -113,14 +113,14 @@ export default function Navbar() {
           ) : (
             <>
               <Link href="/auth">
-                <a className="hidden md:inline-block text-[#1E88E5] hover:text-primary-dark">
+                <div className="hidden md:inline-block text-[#1E88E5] hover:text-primary-dark cursor-pointer">
                   登录
-                </a>
+                </div>
               </Link>
               <Link href="/auth">
-                <a className="hidden md:inline-block bg-[#1E88E5] hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-all">
+                <div className="hidden md:inline-block bg-[#1E88E5] hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-all cursor-pointer">
                   注册
-                </a>
+                </div>
               </Link>
             </>
           )}
@@ -139,7 +139,7 @@ export default function Navbar() {
       <div className={`md:hidden bg-white ${mobileMenuOpen ? 'block' : 'hidden'}`}>
         <div className="px-4 py-3 space-y-3">
           <Link href="/">
-            <a className="block text-[#333333] hover:text-[#1E88E5] font-medium py-2">首页</a>
+            <div className="block text-[#333333] hover:text-[#1E88E5] font-medium py-2 cursor-pointer">首页</div>
           </Link>
           
           <div className="py-2">
@@ -151,44 +151,44 @@ export default function Navbar() {
               <ChevronDown className="h-4 w-4" />
             </button>
             <div className="hidden pl-4 mt-2 space-y-2">
-              <Link href="/">
-                <a className="block py-2 text-[#333333] hover:text-[#1E88E5]">全部赛事</a>
+              <Link href="/competitions">
+                <div className="block py-2 text-[#333333] hover:text-[#1E88E5] cursor-pointer">全部赛事</div>
               </Link>
-              <Link href="/">
-                <a className="block py-2 text-[#333333] hover:text-[#1E88E5]">正在报名</a>
+              <Link href="/competitions?status=active">
+                <div className="block py-2 text-[#333333] hover:text-[#1E88E5] cursor-pointer">正在报名</div>
               </Link>
-              <Link href="/">
-                <a className="block py-2 text-[#333333] hover:text-[#1E88E5]">即将开始</a>
+              <Link href="/competitions?status=upcoming">
+                <div className="block py-2 text-[#333333] hover:text-[#1E88E5] cursor-pointer">即将开始</div>
               </Link>
-              <Link href="/">
-                <a className="block py-2 text-[#333333] hover:text-[#1E88E5]">历届赛事</a>
+              <Link href="/competitions?status=past">
+                <div className="block py-2 text-[#333333] hover:text-[#1E88E5] cursor-pointer">历届赛事</div>
               </Link>
             </div>
           </div>
           
-          <Link href="/">
-            <a className="block text-[#333333] hover:text-[#1E88E5] font-medium py-2">参赛指南</a>
+          <Link href="/guide">
+            <div className="block text-[#333333] hover:text-[#1E88E5] font-medium py-2 cursor-pointer">参赛指南</div>
           </Link>
           
-          <Link href="/">
-            <a className="block text-[#333333] hover:text-[#1E88E5] font-medium py-2">新闻公告</a>
+          <Link href="/news">
+            <div className="block text-[#333333] hover:text-[#1E88E5] font-medium py-2 cursor-pointer">新闻公告</div>
           </Link>
           
-          <Link href="/">
-            <a className="block text-[#333333] hover:text-[#1E88E5] font-medium py-2">关于我们</a>
+          <Link href="/about">
+            <div className="block text-[#333333] hover:text-[#1E88E5] font-medium py-2 cursor-pointer">关于我们</div>
           </Link>
           
           {!user && (
             <div className="flex space-x-3 pt-3 border-t border-gray-200">
               <Link href="/auth">
-                <a className="bg-white border border-[#1E88E5] text-[#1E88E5] font-medium py-2 px-4 rounded-md text-center w-1/2">
+                <div className="bg-white border border-[#1E88E5] text-[#1E88E5] font-medium py-2 px-4 rounded-md text-center w-1/2 cursor-pointer">
                   登录
-                </a>
+                </div>
               </Link>
               <Link href="/auth">
-                <a className="bg-[#1E88E5] text-white font-medium py-2 px-4 rounded-md text-center w-1/2">
+                <div className="bg-[#1E88E5] text-white font-medium py-2 px-4 rounded-md text-center w-1/2 cursor-pointer">
                   注册
-                </a>
+                </div>
               </Link>
             </div>
           )}
@@ -197,7 +197,7 @@ export default function Navbar() {
             <div className="pt-3 border-t border-gray-200">
               {user.role === "admin" && (
                 <Link href="/admin">
-                  <a className="block py-2 text-[#333333] hover:text-[#1E88E5]">管理后台</a>
+                  <div className="block py-2 text-[#333333] hover:text-[#1E88E5] cursor-pointer">管理后台</div>
                 </Link>
               )}
               <button 

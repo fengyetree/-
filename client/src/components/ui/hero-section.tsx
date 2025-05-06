@@ -10,7 +10,7 @@ export default function HeroSection() {
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">2023全国大学生创新创业大赛</h1>
           <p className="text-xl text-white mb-8">汇聚青春智慧，点燃创新梦想</p>
           <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-            <Link href="/competition/1">
+            <Link href="/register-competition/1">
               <Button size="lg" className="bg-[#1E88E5] hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-md transition-all">
                 立即报名
               </Button>
