@@ -47,9 +47,9 @@ export default function Navbar() {
       <nav className="container mx-auto px-4 py-3 flex items-center justify-between">
         <div className="flex items-center">
           <Link href="/">
-            <a className="flex items-center">
+            <div className="flex items-center cursor-pointer">
               <span className="text-[#1E88E5] text-2xl font-bold">全国高校大学生竞赛平台</span>
-            </a>
+            </div>
           </Link>
         </div>
         

@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth } from "./auth";
+import { hashPassword } from "./auth"; // Import hashPassword function
 import z from 'zod';
 import { insertUserSchema, insertCompetitionSchema, insertTrackSchema, insertRegistrationSchema } from "@shared/schema";
 
@@ -264,9 +265,11 @@ async function initializeData() {
     // Create admin user if it doesn't exist
     const adminExists = await storage.getUserByUsername("admin");
     if (!adminExists) {
+      // Hash the password before storing
+      const hashedPassword = await hashPassword("000000");
       await storage.createUser({
         username: "admin",
-        password: "000000", // This will be hashed in the auth.ts file
+        password: hashedPassword,
         role: "admin",
         university: "管理员",
         email: "admin@example.com"
