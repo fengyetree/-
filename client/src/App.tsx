@@ -11,6 +11,8 @@ import RegisterCompetition from "@/pages/register-competition";
 import AdminDashboard from "@/pages/admin/dashboard";
 import AdminCompetitions from "@/pages/admin/competitions";
 import AdminParticipants from "@/pages/admin/participants";
+import TrackDetailsPage from "@/pages/track-details";
+import TracksListPage from "@/pages/tracks-list";
 import { AuthProvider } from "@/hooks/use-auth";
 import { ProtectedRoute } from "./lib/protected-route";
 
@@ -20,6 +22,8 @@ function Router() {
       <Route path="/" component={HomePage} />
       <Route path="/auth" component={AuthPage} />
       <Route path="/competition/:id" component={CompetitionPage} />
+      <Route path="/tracks" component={TracksListPage} />
+      <Route path="/tracks/:id" component={TrackDetailsPage} />
       <ProtectedRoute path="/register-competition/:id" component={RegisterCompetition} />
       <ProtectedRoute path="/admin" component={AdminDashboard} />
       <ProtectedRoute path="/admin/competitions" component={AdminCompetitions} />

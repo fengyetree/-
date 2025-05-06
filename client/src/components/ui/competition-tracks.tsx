@@ -64,7 +64,7 @@ export default function CompetitionTracks({ tracks = [] }: CompetitionTracksProp
               <p className="text-gray-600 mb-4">{track.description}</p>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-[#1E88E5] font-medium">已报名: {track.count}支队伍</span>
-                <Link href="/">
+                <Link href={`/tracks/${track.id}`}>
                   <a className="text-[#1E88E5] hover:text-blue-700 font-medium text-sm">
                     了解更多 <i className="fas fa-arrow-right ml-1"></i>
                   </a>
@@ -75,7 +75,7 @@ export default function CompetitionTracks({ tracks = [] }: CompetitionTracksProp
         </div>
         
         <div className="text-center mt-10">
-          <Link href="/">
+          <Link href="/tracks">
             <Button variant="outline" className="border-[#1E88E5] text-[#1E88E5] hover:bg-[#1E88E5] hover:text-white">
               查看全部赛道
             </Button>
