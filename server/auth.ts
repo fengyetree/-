@@ -28,13 +28,13 @@ async function comparePasswords(supplied: string, stored: string) {
   if (!stored || !stored.includes(".")) {
     return false;
   }
-  
+
   const [hashed, salt] = stored.split(".");
   // Ensure both hashed part and salt exist
   if (!hashed || !salt) {
     return false;
   }
-  
+
   const hashedBuf = Buffer.from(hashed, "hex");
   const suppliedBuf = (await scryptAsync(supplied, salt, 64)) as Buffer;
   return timingSafeEqual(hashedBuf, suppliedBuf);
@@ -42,7 +42,7 @@ async function comparePasswords(supplied: string, stored: string) {
 
 export function setupAuth(app: Express) {
   const sessionSecret = process.env.SESSION_SECRET || "campus-competition-platform-secret";
-  
+
   const sessionSettings: session.SessionOptions = {
     secret: sessionSecret,
     resave: false,
@@ -89,23 +89,23 @@ export function setupAuth(app: Express) {
     try {
       // Validate input
       const userData = insertUserSchema.parse(req.body);
-      
+
       // Check if username already exists
       const existingUser = await storage.getUserByUsername(userData.username);
       if (existingUser) {
         return res.status(400).json({ message: "用户名已存在" });
       }
-      
+
       // Hash password
       const hashedPassword = await hashPassword(userData.password);
-      
+
       // Create user with hashed password
       const user = await storage.createUser({
         ...userData,
         password: hashedPassword,
         role: userData.role || "student",
       });
-      
+
       // Remove the password from the response
       const { password, ...userWithoutPassword } = user;
 
@@ -122,38 +122,38 @@ export function setupAuth(app: Express) {
     }
   });
 
-  // Login endpoint
-  app.post("/api/login", (req, res, next) => {
-    passport.authenticate("local", (err: Error | null, user: any, info: any) => {
-      if (err) return next(err);
-      if (!user) return res.status(401).json({ message: "用户名或密码错误" });
-      
-      req.login(user, (err: Error | null) => {
-        if (err) return next(err);
-        
-        // Don't send the password back to the client
-        const { password, ...userWithoutPassword } = user;
-        return res.json(userWithoutPassword);
-      });
-    })(req, res, next);
-  });
+  // // Login endpoint
+  // app.post("/api/login", (req, res, next) => {
+  //   passport.authenticate("local", (err: Error | null, user: any, info: any) => {
+  //     if (err) return next(err);
+  //     if (!user) return res.status(401).json({ message: "用户名或密码错误" });
+  //
+  //     req.login(user, (err: Error | null) => {
+  //       if (err) return next(err);
+  //
+  //       // Don't send the password back to the client
+  //       const { password, ...userWithoutPassword } = user;
+  //       return res.json(userWithoutPassword);
+  //     });
+  //   })(req, res, next);
+  // });
 
   // Logout endpoint
-  app.post("/api/logout", (req, res, next) => {
-    req.logout((err: Error | null) => {
-      if (err) return next(err);
-      res.sendStatus(200);
-    });
-  });
+  // app.post("/api/logout", (req, res, next) => {
+  //   req.logout((err: Error | null) => {
+  //     if (err) return next(err);
+  //     res.sendStatus(200);
+  //   });
+  // });
 
   // Get current user endpoint
-  app.get("/api/user", (req, res) => {
-    if (!req.isAuthenticated()) {
-      return res.sendStatus(401);
-    }
-    
-    // Don't send the password back to the client
-    const { password, ...userWithoutPassword } = req.user;
-    res.json(userWithoutPassword);
-  });
+  // app.get("/api/user", (req, res) => {
+  //   if (!req.isAuthenticated()) {
+  //     return res.sendStatus(401);
+  //   }
+  //
+  //   // Don't send the password back to the client
+  //   const { password, ...userWithoutPassword } = req.user;
+  //   res.json(userWithoutPassword);
+  // });
 }

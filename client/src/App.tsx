@@ -15,6 +15,7 @@ import TrackDetailsPage from "@/pages/track-details";
 import TracksListPage from "@/pages/tracks-list";
 import { AuthProvider } from "@/hooks/use-auth";
 import { ProtectedRoute } from "./lib/protected-route";
+import { useEffect } from "react";
 
 function Router() {
   return (
@@ -34,14 +35,31 @@ function Router() {
 }
 
 function App() {
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data.type === 'LOGIN_STATUS' && event.data.isLoggedIn) {
+        // 保存父级传递的token
+        localStorage.setItem('token', event.data.token);
+      } else if (event.data.type === 'LOGOUT') {
+        // 处理退出登录
+        localStorage.removeItem('token');
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
+      <TooltipProvider>
+        <AuthProvider>
           <Router />
-        </TooltipProvider>
-      </AuthProvider>
+          <Toaster />
+        </AuthProvider>
+      </TooltipProvider>
     </QueryClientProvider>
   );
 }

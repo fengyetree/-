@@ -1,7 +1,48 @@
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
+import { useLocation } from "wouter";
 
 export default function HeroSection() {
+  const [, setLocation] = useLocation();
+
+  const handleRegisterClick = async (e: React.MouseEvent) => {
+    // 检查是否有token
+    const token = localStorage.getItem('token');
+    if (!token) {
+      e.preventDefault();
+      // 通知父级需要登录
+      window.parent.postMessage({ type: 'NEED_LOGIN' }, '*');
+      return;
+    }
+
+    try {
+      // 请求加密接口
+      const response = await fetch('http://localhost:10090/encryptUserInformationToken', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('加密请求失败');
+      }
+
+      const res = await response.json();
+      if (res.code === 200) {
+        const competitionUrl = "http://localhost:3100?auth_code=" + window.encodeURIComponent(res.data);
+        console.log(competitionUrl);
+        // 打开新标签页
+        window.open(competitionUrl, '_blank');
+      }
+    } catch (error) {
+      console.error('加密请求出错:', error);
+      e.preventDefault();
+      return;
+    }
+  };
+
   return (
     <section className="relative h-[500px] bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1000')" }}>
       <div className="absolute inset-0 bg-black bg-opacity-50"></div>
@@ -10,7 +51,7 @@ export default function HeroSection() {
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">2023全国大学生创新创业大赛</h1>
           <p className="text-xl text-white mb-8">汇聚青春智慧，点燃创新梦想</p>
           <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-            <Link href="/register-competition/1">
+            <Link href="#" onClick={handleRegisterClick}>
               <Button size="lg" className="bg-[#1E88E5] hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-md transition-all">
                 立即报名
               </Button>
