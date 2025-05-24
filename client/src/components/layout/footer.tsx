@@ -103,7 +103,10 @@ export default function Footer() {
         </div>
         
         <div className="border-t border-gray-700 pt-6 mt-6 text-center text-gray-500 text-sm">
-          <p>© {new Date().getFullYear()} 全国高校大学生竞赛平台 版权所有 | 京ICP备12345678号</p>
+          <p>© {new Date().getFullYear()}  Copyright © 2025 重庆芝诺大数据有限公司 保留所有权利 | </p>
+          <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">渝ICP备16008902号-3</a>
+          <a href="http://113.207.120.45:7010/wljyzbs/index.html?sfdm=120160407143433244197#/index.html?sfdm=120160407143433244197" target="_blank" rel="noopener noreferrer">工商网监 </a>
+          <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=50010402000559" target="_blank" rel="noopener noreferrer">渝公网安备 50010402000559号</a>
         </div>
       </div>
     </footer>

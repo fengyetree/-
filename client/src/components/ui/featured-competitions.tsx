@@ -12,7 +12,7 @@ export default function FeaturedCompetitions({ competitions = [] }: FeaturedComp
   const defaultCompetitions = [
     {
       id: 1,
-      title: "2023全国大学生创新创业大赛",
+      title: "2024年大学生数据要素素质大赛",
       description: "聚焦新时代创新创业，汇聚青年智慧，探索科技前沿，推动创业实践，打造全方位创新创业竞赛平台。",
       imageUrl: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=450",
       registrationDeadline: new Date("2023-10-15"),
@@ -41,7 +41,7 @@ export default function FeaturedCompetitions({ competitions = [] }: FeaturedComp
 
   // Use provided competitions if available, otherwise use default competitions
   const displayCompetitions = competitions.length > 0 
-    ? competitions.slice(0, 3) 
+    ? competitions
     : defaultCompetitions;
 
   return (
@@ -56,7 +56,7 @@ export default function FeaturedCompetitions({ competitions = [] }: FeaturedComp
           {displayCompetitions.map((competition) => (
             <div key={competition.id} className="bg-[#F5F5F5] rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all">
               <img 
-                src={competition.imageUrl || "https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=450"} 
+                src={competition.imageUrl || "https://obs-cq.cucloud.cn/zeno-videofile/files/20240603/0008a5be-2394-4b60-8a4b-86546e633a85.png"} 
                 alt={competition.title} 
                 className="w-full h-48 object-cover"
               />
@@ -80,7 +80,7 @@ export default function FeaturedCompetitions({ competitions = [] }: FeaturedComp
                       <i className="fas fa-university mr-1"></i> {Math.floor(Math.random() * 20) + 10}所高校
                     </div>
                   </div>
-                  <Link href={`/competition/${competition.id}`}>
+                  <Link href={`/competition/${competition.id}/districts`}>
                     <a className="text-[#1E88E5] hover:text-blue-700 font-medium text-sm">
                       立即报名
                     </a>

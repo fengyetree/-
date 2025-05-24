@@ -78,7 +78,14 @@ export default function CompetitionPage() {
   }
 
   return (
-    <>
+    <div className="relative">
+      <button
+        onClick={() => navigate("/")}
+        className="absolute top-4 left-4 bg-white rounded-full shadow-lg border border-blue-200 p-3 hover:bg-blue-100 hover:text-[#1E88E5] transition z-50 text-lg font-bold text-[#333]"
+        style={{ boxShadow: '0 4px 16px rgba(30,136,229,0.10)' }}
+      >
+        返回主页
+      </button>
       <Helmet>
         <title>{competition.title} - 全国高校大学生竞赛平台</title>
         <meta name="description" content={competition.description || `查看${competition.title}详情并参与报名。全国高校大学生竞赛平台为全国大学生提供优质竞赛服务。`} />
@@ -256,6 +263,6 @@ export default function CompetitionPage() {
       </main>
       
       <Footer />
-    </>
+    </div>
   );
 }

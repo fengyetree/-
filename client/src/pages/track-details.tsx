@@ -49,6 +49,74 @@ export default function TrackDetailsPage() {
     );
   }
 
+  // 赛道详情内容定制
+  const renderCustomContent = (track: Track) => {
+    switch (track.name) {
+      case "区块链赛道":
+        return (
+          <>
+            <h2 className="text-2xl font-bold mb-4">赛道简介</h2>
+            <p className="text-gray-700 mb-6">区块链赛道聚焦于区块链底层技术创新、智能合约开发、数字资产管理、去中心化应用（DApp）等领域，推动数字经济与实体经济深度融合。</p>
+            <h2 className="text-2xl font-bold mb-4">赛道特点</h2>
+            <ul className="list-disc pl-6 mb-6 text-gray-700">
+              <li>强调去中心化、安全性与可追溯性</li>
+              <li>鼓励跨行业区块链创新应用</li>
+              <li>支持多链互操作与新型共识机制探索</li>
+            </ul>
+            <h2 className="text-2xl font-bold mb-4">参赛要求</h2>
+            <p className="text-gray-700">参赛项目需具备创新性、可落地性，鼓励结合实际场景提出区块链解决方案。</p>
+          </>
+        );
+      case "智慧交通赛道":
+        return (
+          <>
+            <h2 className="text-2xl font-bold mb-4">赛道简介</h2>
+            <p className="text-gray-700 mb-6">智慧交通赛道关注智能交通系统、车联网、自动驾驶、交通大数据分析等领域，致力于提升城市交通效率与安全。</p>
+            <h2 className="text-2xl font-bold mb-4">赛道特点</h2>
+            <ul className="list-disc pl-6 mb-6 text-gray-700">
+              <li>强调智能感知与实时数据处理</li>
+              <li>鼓励交通仿真、路径优化、智能调度等创新</li>
+              <li>支持多源数据融合与AI算法应用</li>
+            </ul>
+            <h2 className="text-2xl font-bold mb-4">参赛要求</h2>
+            <p className="text-gray-700">项目需聚焦交通领域实际问题，具备创新性和可推广性。</p>
+          </>
+        );
+      case "航空航天赛道":
+        return (
+          <>
+            <h2 className="text-2xl font-bold mb-4">赛道简介</h2>
+            <p className="text-gray-700 mb-6">航空航天赛道面向航空航天技术创新、卫星应用、无人机系统、航天器设计等方向，推动前沿科技发展。</p>
+            <h2 className="text-2xl font-bold mb-4">赛道特点</h2>
+            <ul className="list-disc pl-6 mb-6 text-gray-700">
+              <li>强调工程创新与系统集成能力</li>
+              <li>鼓励新材料、新结构、新动力等探索</li>
+              <li>支持航天遥感、空间信息处理等应用</li>
+            </ul>
+            <h2 className="text-2xl font-bold mb-4">参赛要求</h2>
+            <p className="text-gray-700">项目需具备技术创新性和工程可实现性，鼓励产学研结合。</p>
+          </>
+        );
+      case "教育科技赛道":
+        return (
+          <>
+            <h2 className="text-2xl font-bold mb-4">赛道简介</h2>
+            <p className="text-gray-700 mb-6">教育科技赛道聚焦教育信息化、智能学习、在线教育平台、AI助教等领域，推动教育公平与个性化发展。</p>
+            <h2 className="text-2xl font-bold mb-4">赛道特点</h2>
+            <ul className="list-disc pl-6 mb-6 text-gray-700">
+              <li>强调技术赋能教育创新</li>
+              <li>鼓励智能评测、个性化推荐、虚拟仿真等应用</li>
+              <li>支持多终端、多场景教育解决方案</li>
+            </ul>
+            <h2 className="text-2xl font-bold mb-4">参赛要求</h2>
+            <p className="text-gray-700">项目需关注教育实际需求，具备创新性和社会价值。</p>
+          </>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="bg-[#F5F5F5] min-h-screen">
       <Helmet>
@@ -118,37 +186,9 @@ export default function TrackDetailsPage() {
                   {track?.description ||
                     "此赛道致力于培养学生的创新思维和解决实际问题的能力，鼓励跨学科合作和前沿技术应用。通过参与此赛道，学生将有机会展示自己的创新项目，获得专家指导，并有可能获得创业支持和奖金。"}
                 </p>
-
                 <h2 className="text-2xl font-bold mb-4">赛道特点</h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="bg-[#F5F5F5] p-4 rounded-lg">
-                    <div className="w-12 h-12 bg-[#1E88E5]/10 rounded-full flex items-center justify-center mb-4">
-                      <Trophy className="h-6 w-6 text-[#1E88E5]" />
-                    </div>
-                    <h3 className="text-lg font-semibold mb-2">丰厚奖励</h3>
-                    <p className="text-gray-600">
-                      优胜团队可获得丰厚奖金及创业扶持资源
-                    </p>
-                  </div>
-                  <div className="bg-[#F5F5F5] p-4 rounded-lg">
-                    <div className="w-12 h-12 bg-[#1E88E5]/10 rounded-full flex items-center justify-center mb-4">
-                      <Users className="h-6 w-6 text-[#1E88E5]" />
-                    </div>
-                    <h3 className="text-lg font-semibold mb-2">导师指导</h3>
-                    <p className="text-gray-600">
-                      行业专家全程指导，助力项目完善与提升
-                    </p>
-                  </div>
-                  <div className="bg-[#F5F5F5] p-4 rounded-lg">
-                    <div className="w-12 h-12 bg-[#1E88E5]/10 rounded-full flex items-center justify-center mb-4">
-                      <School className="h-6 w-6 text-[#1E88E5]" />
-                    </div>
-                    <h3 className="text-lg font-semibold mb-2">资源对接</h3>
-                    <p className="text-gray-600">
-                      提供创新创业资源对接，促进项目落地转化
-                    </p>
-                  </div>
-                </div>
+                {/* 自定义内容 */}
+                {track ? renderCustomContent(track) : null}
               </CardContent>
             </Card>
           </TabsContent>

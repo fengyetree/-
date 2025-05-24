@@ -82,6 +82,53 @@ export default function CompetitionSchedule() {
           </div>
         </div>
       </div>
+      {/* 分赛区节点时间表 */}
+      <div className="container mx-auto px-4 mt-12">
+        <h3 className="text-2xl font-bold mb-4 text-[#1E88E5]">分赛区节点时间表</h3>
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white rounded-2xl shadow-xl text-center border border-gray-200">
+            <thead>
+              <tr className="bg-gradient-to-r from-blue-100 to-blue-300 text-blue-900">
+                <th className="py-3 px-4">赛区</th>
+                <th className="py-3 px-4">报名时间</th>
+                <th className="py-3 px-4">初赛时间</th>
+                <th className="py-3 px-4">复赛时间</th>
+                <th className="py-3 px-4">决赛时间</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="even:bg-blue-50 hover:bg-blue-100 transition">
+                <td className="py-3 px-4 font-semibold text-blue-700">华北赛区</td>
+                <td className="py-3 px-4">2023-09-01 ~ 09-20</td>
+                <td className="py-3 px-4">2023-10-10 ~ 10-15</td>
+                <td className="py-3 px-4">2023-11-01 ~ 11-05</td>
+                <td className="py-3 px-4">2023-12-10</td>
+              </tr>
+              <tr className="even:bg-blue-50 hover:bg-blue-100 transition">
+                <td className="py-3 px-4 font-semibold text-blue-700">华东赛区</td>
+                <td className="py-3 px-4">2023-09-05 ~ 09-25</td>
+                <td className="py-3 px-4">2023-10-12 ~ 10-18</td>
+                <td className="py-3 px-4">2023-11-03 ~ 11-08</td>
+                <td className="py-3 px-4">2023-12-12</td>
+              </tr>
+              <tr className="even:bg-blue-50 hover:bg-blue-100 transition">
+                <td className="py-3 px-4 font-semibold text-blue-700">西南赛区</td>
+                <td className="py-3 px-4">2023-09-10 ~ 09-28</td>
+                <td className="py-3 px-4">2023-10-15 ~ 10-20</td>
+                <td className="py-3 px-4">2023-11-06 ~ 11-12</td>
+                <td className="py-3 px-4">2023-12-15</td>
+              </tr>
+              <tr className="even:bg-blue-50 hover:bg-blue-100 transition">
+                <td className="py-3 px-4 font-semibold text-blue-700">东北赛区</td>
+                <td className="py-3 px-4">2023-09-12 ~ 09-30</td>
+                <td className="py-3 px-4">2023-10-18 ~ 10-22</td>
+                <td className="py-3 px-4">2023-11-10 ~ 11-15</td>
+                <td className="py-3 px-4">2023-12-18</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </section>
   );
 }

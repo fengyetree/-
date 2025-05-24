@@ -43,7 +43,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-md">
+    <header hidden className="sticky top-0 z-50 bg-white shadow-md">
       <nav className="container mx-auto px-4 py-3 flex items-center justify-between">
         <div className="flex items-center">
           <Link href="/">
@@ -52,13 +52,13 @@ export default function Navbar() {
             </div>
           </Link>
         </div>
-        
+
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-8">
           <Link href="/">
             <div className="text-[#333333] hover:text-[#1E88E5] font-medium cursor-pointer">首页</div>
           </Link>
-          
+
           <NavbarLink href="#" text="赛事信息">
             <Link href="/competitions">
               <div className="block px-4 py-2 text-sm text-[#333333] hover:bg-[#1E88E5] hover:text-white cursor-pointer">全部赛事</div>
@@ -73,20 +73,20 @@ export default function Navbar() {
               <div className="block px-4 py-2 text-sm text-[#333333] hover:bg-[#1E88E5] hover:text-white cursor-pointer">历届赛事</div>
             </Link>
           </NavbarLink>
-          
+
           <Link href="/guide">
             <div className="text-[#333333] hover:text-[#1E88E5] font-medium cursor-pointer">参赛指南</div>
           </Link>
-          
+
           <Link href="/news">
             <div className="text-[#333333] hover:text-[#1E88E5] font-medium cursor-pointer">新闻公告</div>
           </Link>
-          
+
           <Link href="/about">
             <div className="text-[#333333] hover:text-[#1E88E5] font-medium cursor-pointer">关于我们</div>
           </Link>
         </div>
-        
+
         {/* Login/Register */}
         <div className="flex items-center space-x-4">
           {user ? (
@@ -124,9 +124,9 @@ export default function Navbar() {
               </Link>
             </>
           )}
-          
+
           {/* Mobile menu button */}
-          <button 
+          <button
             className="md:hidden text-[#333333] hover:text-[#1E88E5]"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
@@ -134,16 +134,16 @@ export default function Navbar() {
           </button>
         </div>
       </nav>
-      
+
       {/* Mobile Navigation */}
       <div className={`md:hidden bg-white ${mobileMenuOpen ? 'block' : 'hidden'}`}>
         <div className="px-4 py-3 space-y-3">
           <Link href="/">
             <div className="block text-[#333333] hover:text-[#1E88E5] font-medium py-2 cursor-pointer">首页</div>
           </Link>
-          
+
           <div className="py-2">
-            <button 
+            <button
               className="flex justify-between w-full text-[#333333] font-medium items-center"
               onClick={() => {}}
             >
@@ -165,19 +165,19 @@ export default function Navbar() {
               </Link>
             </div>
           </div>
-          
+
           <Link href="/guide">
             <div className="block text-[#333333] hover:text-[#1E88E5] font-medium py-2 cursor-pointer">参赛指南</div>
           </Link>
-          
+
           <Link href="/news">
             <div className="block text-[#333333] hover:text-[#1E88E5] font-medium py-2 cursor-pointer">新闻公告</div>
           </Link>
-          
+
           <Link href="/about">
             <div className="block text-[#333333] hover:text-[#1E88E5] font-medium py-2 cursor-pointer">关于我们</div>
           </Link>
-          
+
           {!user && (
             <div className="flex space-x-3 pt-3 border-t border-gray-200">
               <Link href="/auth">
@@ -192,7 +192,7 @@ export default function Navbar() {
               </Link>
             </div>
           )}
-          
+
           {user && (
             <div className="pt-3 border-t border-gray-200">
               {user.role === "admin" && (
@@ -200,7 +200,7 @@ export default function Navbar() {
                   <div className="block py-2 text-[#333333] hover:text-[#1E88E5] cursor-pointer">管理后台</div>
                 </Link>
               )}
-              <button 
+              <button
                 onClick={handleLogout}
                 className="flex items-center w-full py-2 text-[#333333] hover:text-[#1E88E5]"
               >
