@@ -71,9 +71,10 @@ const competitionFormSchema = insertCompetitionSchema.extend({
   description: z.string().min(10, "描述至少需要10个字符"),
   imageUrl: z.string().url("请输入有效的图片URL").optional().or(z.literal('')),
   trackId: z.number().or(z.string().transform(val => parseInt(val))),
-  registrationDeadline: z.string(),
-  startDate: z.string(),
-  endDate: z.string(),
+  registrationDeadline: z.date({ required_error: "请选择报名截止日期" }),
+  startDate: z.date({ required_error: "请选择开始日期" }),
+  endDate: z.date({ required_error: "请选择结束日期" }),
+  status: z.enum(["active", "upcoming", "completed"]),
 });
 
 // Track form schema
@@ -107,9 +108,9 @@ export default function AdminCompetitions() {
       description: "",
       imageUrl: "",
       trackId: 0,
-      registrationDeadline: new Date().toISOString().split('T')[0],
-      startDate: new Date().toISOString().split('T')[0],
-      endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      registrationDeadline: new Date(),
+      startDate: new Date(),
+      endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
       status: "active",
     },
   });
@@ -126,7 +127,7 @@ export default function AdminCompetitions() {
 
   // Competition mutations
   const createCompetitionMutation = useMutation({
-    mutationFn: async (values: z.infer<typeof competitionFormSchema>) => {
+    mutationFn: async (values: Omit<z.infer<typeof competitionFormSchema>, 'registrationDeadline' | 'startDate' | 'endDate'> & { registrationDeadline: string; startDate: string; endDate: string; }) => {
       const res = await apiRequest("POST", "/api/competitions", values);
       return await res.json();
     },
@@ -149,7 +150,7 @@ export default function AdminCompetitions() {
   });
 
   const updateCompetitionMutation = useMutation({
-    mutationFn: async ({ id, data }: { id: number, data: z.infer<typeof competitionFormSchema> }) => {
+    mutationFn: async ({ id, data }: { id: number, data: Omit<z.infer<typeof competitionFormSchema>, 'registrationDeadline' | 'startDate' | 'endDate'> & { registrationDeadline: string; startDate: string; endDate: string; } }) => {
       const res = await apiRequest("PATCH", `/api/competitions/${id}`, data);
       return await res.json();
     },
@@ -224,29 +225,32 @@ export default function AdminCompetitions() {
       description: competition.description || "",
       imageUrl: competition.imageUrl || "",
       trackId: competition.trackId,
-      registrationDeadline: competition.registrationDeadline ? 
-        new Date(competition.registrationDeadline).toISOString().split('T')[0] : 
-        new Date().toISOString().split('T')[0],
-      startDate: competition.startDate ? 
-        new Date(competition.startDate).toISOString().split('T')[0] : 
-        new Date().toISOString().split('T')[0],
-      endDate: competition.endDate ? 
-        new Date(competition.endDate).toISOString().split('T')[0] : 
-        new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-      status: competition.status,
+      registrationDeadline: competition.registrationDeadline ? new Date(competition.registrationDeadline) : new Date(),
+      startDate: competition.startDate ? new Date(competition.startDate) : new Date(),
+      endDate: competition.endDate ? new Date(competition.endDate) : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+      status: competition.status as "active" | "upcoming" | "completed",
     });
     setIsEditingCompetition(true);
   };
 
   // Handle competition submission
   const onCompetitionSubmit = async (values: z.infer<typeof competitionFormSchema>) => {
+    // Format Date objects to yyyy-MM-dd strings before sending to backend
+    const dataToSend = {
+      ...values,
+      registrationDeadline: format(values.registrationDeadline, 'yyyy-MM-dd'),
+      startDate: format(values.startDate, 'yyyy-MM-dd'),
+      endDate: format(values.endDate, 'yyyy-MM-dd'),
+      // status is already the correct string type from the form select
+    };
+
     if (isEditingCompetition && selectedCompetition) {
       await updateCompetitionMutation.mutateAsync({
         id: selectedCompetition.id,
-        data: values,
+        data: dataToSend,
       });
     } else {
-      await createCompetitionMutation.mutateAsync(values);
+      await createCompetitionMutation.mutateAsync(dataToSend);
     }
   };
 
@@ -479,7 +483,7 @@ export default function AdminCompetitions() {
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
-                                <SelectItem value="active">活跃</SelectItem>
+                                <SelectItem value="active">正在报名</SelectItem>
                                 <SelectItem value="upcoming">即将开始</SelectItem>
                                 <SelectItem value="completed">已结束</SelectItem>
                               </SelectContent>
@@ -498,8 +502,16 @@ export default function AdminCompetitions() {
                           <FormItem>
                             <FormLabel>报名截止日期</FormLabel>
                             <FormControl>
-                              <Input type="date" {...field} />
+                              <Input
+                                type="date"
+                                {...field}
+                                value={field.value instanceof Date && !isNaN(field.value.getTime()) ? format(field.value, 'yyyy-MM-dd') : ''}
+                                onChange={(e) => field.onChange(new Date(e.target.value))}
+                              />
                             </FormControl>
+                            <FormDescription>
+                              竞赛的报名截止日期。
+                            </FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -512,8 +524,16 @@ export default function AdminCompetitions() {
                           <FormItem>
                             <FormLabel>开始日期</FormLabel>
                             <FormControl>
-                              <Input type="date" {...field} />
+                              <Input
+                                type="date"
+                                {...field}
+                                value={field.value instanceof Date && !isNaN(field.value.getTime()) ? format(field.value, 'yyyy-MM-dd') : ''}
+                                onChange={(e) => field.onChange(new Date(e.target.value))}
+                              />
                             </FormControl>
+                            <FormDescription>
+                              竞赛的开始日期。
+                            </FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -526,8 +546,16 @@ export default function AdminCompetitions() {
                           <FormItem>
                             <FormLabel>结束日期</FormLabel>
                             <FormControl>
-                              <Input type="date" {...field} />
+                              <Input
+                                type="date"
+                                {...field}
+                                value={field.value instanceof Date && !isNaN(field.value.getTime()) ? format(field.value, 'yyyy-MM-dd') : ''}
+                                onChange={(e) => field.onChange(new Date(e.target.value))}
+                              />
                             </FormControl>
+                            <FormDescription>
+                              竞赛的结束日期。
+                            </FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -650,7 +678,7 @@ export default function AdminCompetitions() {
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
-                                <SelectItem value="active">活跃</SelectItem>
+                                <SelectItem value="active">正在报名</SelectItem>
                                 <SelectItem value="upcoming">即将开始</SelectItem>
                                 <SelectItem value="completed">已结束</SelectItem>
                               </SelectContent>
@@ -669,8 +697,16 @@ export default function AdminCompetitions() {
                           <FormItem>
                             <FormLabel>报名截止日期</FormLabel>
                             <FormControl>
-                              <Input type="date" {...field} />
+                              <Input
+                                type="date"
+                                {...field}
+                                value={field.value instanceof Date && !isNaN(field.value.getTime()) ? format(field.value, 'yyyy-MM-dd') : ''}
+                                onChange={(e) => field.onChange(new Date(e.target.value))}
+                              />
                             </FormControl>
+                            <FormDescription>
+                              竞赛的报名截止日期。
+                            </FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -683,8 +719,16 @@ export default function AdminCompetitions() {
                           <FormItem>
                             <FormLabel>开始日期</FormLabel>
                             <FormControl>
-                              <Input type="date" {...field} />
+                              <Input
+                                type="date"
+                                {...field}
+                                value={field.value instanceof Date && !isNaN(field.value.getTime()) ? format(field.value, 'yyyy-MM-dd') : ''}
+                                onChange={(e) => field.onChange(new Date(e.target.value))}
+                              />
                             </FormControl>
+                            <FormDescription>
+                              竞赛的开始日期。
+                            </FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -697,8 +741,16 @@ export default function AdminCompetitions() {
                           <FormItem>
                             <FormLabel>结束日期</FormLabel>
                             <FormControl>
-                              <Input type="date" {...field} />
+                              <Input
+                                type="date"
+                                {...field}
+                                value={field.value instanceof Date && !isNaN(field.value.getTime()) ? format(field.value, 'yyyy-MM-dd') : ''}
+                                onChange={(e) => field.onChange(new Date(e.target.value))}
+                              />
                             </FormControl>
+                            <FormDescription>
+                              竞赛的结束日期。
+                            </FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -761,7 +813,7 @@ export default function AdminCompetitions() {
                             ${competition.status === 'active' ? 'bg-green-100 text-green-800' : 
                               competition.status === 'upcoming' ? 'bg-blue-100 text-blue-800' : 
                               'bg-gray-100 text-gray-800'}`}>
-                            {competition.status === 'active' ? '活跃' : 
+                            {competition.status === 'active' ? '正在报名' : 
                              competition.status === 'upcoming' ? '即将开始' : '已结束'}
                           </span>
                         </TableCell>

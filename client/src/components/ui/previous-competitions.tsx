@@ -14,14 +14,6 @@ export default function PreviousCompetitions() {
           {caseStudies.map((project) => (
             <div key={project.id} className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all flex flex-col">
               <div>
-                <img 
-                  src={project.images[0]} 
-                  alt={project.title} 
-                  className="w-full h-48 object-cover"
-                  onError={(e) => {
-                    e.currentTarget.src = '/placeholder.png';
-                  }}
-                />
                 <div className="p-6 pb-0">
                   <h3 className="text-xl font-bold mb-3">{project.title}</h3>
                   <p className="text-gray-600 mb-4 line-clamp-2">{project.description}</p>

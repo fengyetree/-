@@ -79,6 +79,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     },
     onSuccess: () => {
       queryClient.setQueryData(["/api/user"], null);
+      localStorage.removeItem('token');
       toast({
         title: "登出成功",
         description: "您已安全登出",

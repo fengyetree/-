@@ -13,17 +13,20 @@ import { Helmet } from "react-helmet";
 import LatestNews from "@/components/ui/latest-news";
 
 export default function HomePage() {
+  // 获取竞赛数据api接口
   const { data: competitions } = useQuery<Competition[]>({
     queryKey: ["/api/competitions"],
   });
+  // 获取竞赛数据 如果没有数据则返回空数组，然后调用FeaturedCompetitions组件
+  // const competitions: Competition[] = [];
 
   const { data: tracks } = useQuery<Track[]>({
     queryKey: ["/api/tracks"],
   });
 
-  const featuredCompetitions = competitions?.filter(comp => 
+  const featuredCompetitions = competitions/*?.filter(comp => 
     new Date(comp.registrationDeadline?.toString() || '') > new Date()
-  ) || [];
+  )*/ || [];
 
   const trackNames = [
     "创新创业赛道", "人工智能赛道", "乡村振兴赛道", "生物医药赛道",
@@ -40,9 +43,13 @@ export default function HomePage() {
       <div className="relative">
         <main className="w-full">
           <section id="baoming"><HeroSection /></section>
-          <section id="saidao"><CompetitionTracks tracks={tracks || []} /></section>
+          <section id="saidao"><CompetitionTracks tracks={tracks?.map(track => ({ ...track, description: track.description || '', icon: track.icon || '' })) || []} /></section>
           <section id="xuanchuan"><CompetitionSchedule /></section>
-          <section id="saicheng"><FeaturedCompetitions competitions={featuredCompetitions} /></section>
+          <section id="saicheng" className="py-16 bg-white">
+            <div className="container mx-auto px-4 h-full flex items-center justify-center relative z-10 text-white">
+              <FeaturedCompetitions competitions={featuredCompetitions} />
+            </div>
+          </section>
           <section id="dongtai"><LatestNews /></section>
           <section id="wangjie"><PreviousCompetitions /></section>
           <section id="jiangli"><Universities /></section>

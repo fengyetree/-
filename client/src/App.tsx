@@ -17,33 +17,37 @@ import { AuthProvider } from "@/hooks/use-auth";
 import { ProtectedRoute } from "./lib/protected-route";
 import { useEffect } from "react";
 import CompetitionDistrictsPage from "@/pages/competition-districts-page";
+import CompetitionMapPage from "@/pages/competition-map-page";
+import AllUniversitiesPage from "@/pages/all-universities-page";
+import LoginPage from "@/pages/login-page";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={HomePage} />
+      <Route path="/login" component={LoginPage} />
       <Route path="/competition/:id" component={CompetitionPage} />
+      <Route path="/competition/:id/register" component={RegisterCompetition} />
       <Route path="/competition/:id/districts" component={CompetitionDistrictsPage} />
+      <Route path="/competition/:id/map" component={CompetitionMapPage} />
+      <Route path="/track/:id" component={TrackDetailsPage} />
       <Route path="/tracks" component={TracksListPage} />
-      <Route path="/tracks/:id" component={TrackDetailsPage} />
-      <Route path="/case-details/:id" component={CaseDetails} />
-      <ProtectedRoute path="/register-competition/:id" component={RegisterCompetition} />
-      <ProtectedRoute path="/admin" component={AdminDashboard} />
-      <ProtectedRoute path="/admin/competitions" component={AdminCompetitions} />
-      <ProtectedRoute path="/admin/participants" component={AdminParticipants} />
+      <Route path="/case/:id" component={CaseDetails} />
+      <Route path="/universities" component={AllUniversitiesPage} />
+      <Route path="/admin" component={ProtectedRoute(AdminDashboard)} />
+      <Route path="/admin/competitions" component={ProtectedRoute(AdminCompetitions)} />
+      <Route path="/admin/participants" component={ProtectedRoute(AdminParticipants)} />
       <Route component={NotFound} />
     </Switch>
   );
 }
 
-function App() {
+export default function App() {
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.data.type === 'LOGIN_STATUS' && event.data.isLoggedIn) {
-        // 保存父级传递的token
         localStorage.setItem('token', event.data.token);
       } else if (event.data.type === 'LOGOUT') {
-        // 处理退出登录
         localStorage.removeItem('token');
       }
     };
@@ -56,14 +60,12 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <AuthProvider>
+      <AuthProvider>
+        <TooltipProvider>
           <Router />
           <Toaster />
-        </AuthProvider>
-      </TooltipProvider>
+        </TooltipProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
-
-export default App;

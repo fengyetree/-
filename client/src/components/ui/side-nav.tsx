@@ -42,7 +42,7 @@ export default function SideNav() {
     >
       {/* 顶部图标 */}
       <div className="mb-3">
-        <img src="/icon.png" alt="icon" className="w-10 h-10 drop-shadow" />
+        <img src="https://data.sd.gov.cn/cmtp/img/nav-bar-top.f34b63d1.png" alt="icon" className="w-20 h-20 drop-shadow" />
       </div>
       {navItems.map((item, idx) => (
         <div key={item.id} className="w-full">

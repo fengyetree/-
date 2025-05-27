@@ -5,17 +5,24 @@ import Footer from "@/components/layout/footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, MapPin, ArrowLeft } from "lucide-react"; // 导入 ArrowLeft 图标
+import { useQuery } from "@tanstack/react-query";
+import { Competition } from "@shared/schema";
 
 // 这个页面将显示特定赛事的赛区详情
 export default function CompetitionDistrictsPage() {
-  // 从URL获取比赛ID
   const [, params] = useRoute("/competition/:id/districts");
-  const competitionId = params?.id;
   const [, navigate] = useLocation();
+  const competitionId = params?.id;
+
+  const { data: competition } = useQuery<Competition>({
+    queryKey: [`/api/competitions/${competitionId}`],
+    enabled: !!competitionId,
+  });
+
+  const competitionTitle = competition?.title || "加载中...";
 
   // TODO: 这里需要根据 competitionId 从后端获取该赛事的赛区信息
   // 目前先使用模拟数据
-  const competitionTitle = "当前比赛名称 (Placeholder)"; // 实际应该从后端获取比赛数据
   const districts = [
     { id: 1, name: "华北赛区", registrationDates: "2024-09-01 ~ 2024-09-20", preliminaryDates: "2024-10-10 ~ 2024-10-15", finalDate: "2024-12-10" },
     { id: 2, name: "华东赛区", registrationDates: "2024-09-05 ~ 2024-09-25", preliminaryDates: "2024-10-12 ~ 2024-10-18", finalDate: "2024-12-12" },
@@ -28,7 +35,7 @@ export default function CompetitionDistrictsPage() {
   return (
     <>
       <Helmet>
-        <title>{competitionTitle} 赛区详情 - 全国高校大学生竞赛平台</title>
+        <title>{competitionTitle} 赛区列表 - 全国高校大学生竞赛平台</title>
         <meta name="description" content={`查看 ${competitionTitle} 的不同赛区详细信息和时间安排。`} />
       </Helmet>
       <Navbar />
@@ -38,18 +45,18 @@ export default function CompetitionDistrictsPage() {
         <div className="container mx-auto px-4 mb-8">
             <Button
                 variant="ghost"
-                onClick={() => navigate(`/competition/${competitionId}`)} // 返回到赛事详情页
+                onClick={() => navigate(`/#saicheng`)} // 返回到主页并定位到"正在报名的赛事"
                 className="mb-6"
             >
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                返回赛事详情
+                返回主页
             </Button>
           <div className="bg-white rounded-lg p-6 shadow-md">
             <h1 className="text-2xl md:text-3xl font-bold text-[#333333] mb-4">
-              {competitionTitle} - 赛区详情
+              {competitionTitle} - 赛区列表
             </h1>
             <p className="text-gray-600">
-              以下是本比赛在不同赛区的详细信息和时间安排。
+              请选择您要报名的赛区，查看详细信息或进行报名。
             </p>
           </div>
         </div>
@@ -61,25 +68,29 @@ export default function CompetitionDistrictsPage() {
               districts.map((district) => (
                 <Card key={district.id}>
                   <CardContent className="p-6">
-                    <div className="flex items-center mb-4">
-                        <MapPin className="h-6 w-6 text-[#1E88E5] mr-3" />
-                        <h2 className="text-xl font-bold">{district.name}</h2>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-gray-700">
-                        <div className="flex items-center">
-                            <Calendar className="h-5 w-5 text-gray-500 mr-2" />
-                            <span>报名时间: {district.registrationDates}</span>
+                    <Link href={`/competition/${competitionId}`}>
+                      <a>
+                        <div className="flex items-center mb-4">
+                            <MapPin className="h-6 w-6 text-[#1E88E5] mr-3" />
+                            <h2 className="text-xl font-bold">{district.name}</h2>
                         </div>
-                         <div className="flex items-center">
-                            <Clock className="h-5 w-5 text-gray-500 mr-2" />
-                            <span>初赛时间: {district.preliminaryDates}</span>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-gray-700">
+                            <div className="flex items-center">
+                                <Calendar className="h-5 w-5 text-gray-500 mr-2" />
+                                <span>报名时间: {district.registrationDates}</span>
+                            </div>
+                             <div className="flex items-center">
+                                <Clock className="h-5 w-5 text-gray-500 mr-2" />
+                                <span>初赛时间: {district.preliminaryDates}</span>
+                            </div>
+                             <div className="flex items-center">
+                                <Clock className="h-5 w-5 text-gray-500 mr-2" />
+                                <span>决赛时间: {district.finalDate}</span>
+                            </div>
                         </div>
-                         <div className="flex items-center">
-                            <Clock className="h-5 w-5 text-gray-500 mr-2" />
-                            <span>决赛时间: {district.finalDate}</span>
-                        </div>
-                    </div>
-                    {/* TODO: 可以根据需要添加更多赛区相关的详细信息 */}
+                        {/* TODO: 可以根据需要添加更多赛区相关的详细信息 */}
+                      </a>
+                    </Link>
                   </CardContent>
                 </Card>
               ))

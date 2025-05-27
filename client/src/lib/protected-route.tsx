@@ -1,42 +1,28 @@
+import { Route, useRoute } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
-import { Loader2 } from "lucide-react";
-import { Redirect, Route } from "wouter";
+import { Navigate } from "@/components/ui/navigate";
 
-export function ProtectedRoute({
-  path,
-  component: Component,
-}: {
-  path: string;
-  component: () => React.JSX.Element;
-}) {
-  const { user, isLoading } = useAuth();
+export function ProtectedRoute(Component: React.ComponentType) {
+  return function ProtectedRouteWrapper(props: any) {
+    const { user } = useAuth();
+    const [match, params] = useRoute();
 
-  if (isLoading) {
-    return (
-      <Route path={path}>
-        <div className="flex items-center justify-center min-h-screen">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+    if (!user) {
+      return <Navigate to="/login" />;
+    }
+
+    // Admin route check
+    if (match && match.toString().startsWith("/admin") && user.role !== "admin") {
+      return (
+        <div className="min-h-screen bg-[#F5F5F5] flex items-center justify-center">
+          <div className="bg-white p-8 rounded-lg shadow-md text-center">
+            <h1 className="text-2xl font-bold text-red-600 mb-4">访问受限</h1>
+            <p className="text-gray-600">您没有权限访问此页面</p>
+          </div>
         </div>
-      </Route>
-    );
-  }
+      );
+    }
 
-  // Admin route check
-  if (path.startsWith("/admin") && user?.role !== "admin") {
-    return (
-      <Route path={path}>
-        <Redirect to="/auth" />
-      </Route>
-    );
-  }
-
-  if (!user) {
-    return (
-      <Route path={path}>
-        <Redirect to="/auth" />
-      </Route>
-    );
-  }
-
-  return <Route path={path} component={Component} />
+    return <Component {...props} />;
+  };
 }

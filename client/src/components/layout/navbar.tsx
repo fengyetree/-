@@ -43,7 +43,7 @@ export default function Navbar() {
   };
 
   return (
-    <header hidden className="sticky top-0 z-50 bg-white shadow-md">
+    <header className="sticky top-0 z-50 bg-white shadow-md">
       <nav className="container mx-auto px-4 py-3 flex items-center justify-between">
         <div className="flex items-center">
           <Link href="/">
@@ -112,12 +112,12 @@ export default function Navbar() {
             </DropdownMenu>
           ) : (
             <>
-              <Link href="/auth">
+              <Link href="/login">
                 <div className="hidden md:inline-block text-[#1E88E5] hover:text-primary-dark cursor-pointer">
                   登录
                 </div>
               </Link>
-              <Link href="/auth">
+              <Link href="/login">
                 <div className="hidden md:inline-block bg-[#1E88E5] hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-all cursor-pointer">
                   注册
                 </div>
@@ -180,12 +180,12 @@ export default function Navbar() {
 
           {!user && (
             <div className="flex space-x-3 pt-3 border-t border-gray-200">
-              <Link href="/auth">
+              <Link href="/login">
                 <div className="bg-white border border-[#1E88E5] text-[#1E88E5] font-medium py-2 px-4 rounded-md text-center w-1/2 cursor-pointer">
                   登录
                 </div>
               </Link>
-              <Link href="/auth">
+              <Link href="/login">
                 <div className="bg-[#1E88E5] text-white font-medium py-2 px-4 rounded-md text-center w-1/2 cursor-pointer">
                   注册
                 </div>

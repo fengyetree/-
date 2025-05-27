@@ -316,9 +316,9 @@ async function initializeData() {
         const trackId = tracks[0].id;
 
         await storage.createCompetition({
-          title: "2023全国大学生创新创业大赛",
+          title: "2024年大学生数据要素素质大赛",
           description: "聚焦新时代创新创业，汇聚青年智慧，探索科技前沿，推动创业实践，打造全方位创新创业竞赛平台。",
-          imageUrl: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=450",
+          imageUrl: "https://obs-cq.cucloud.cn/zeno-videofile/files/20240603/0008a5be-2394-4b60-8a4b-86546e633a85.png",
           trackId: trackId,
           registrationDeadline: new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
           startDate: new Date(),

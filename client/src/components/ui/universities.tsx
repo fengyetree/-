@@ -78,7 +78,7 @@ export default function Universities() {
         
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
           {displayUniversities.map((university, index) => (
-            <Link key={index} href="/">
+            <Link key={index} href={university.shortName === "更多" ? "/universities/all" : "/"}>
               <a className="bg-[#F5F5F5] rounded-lg p-4 flex items-center justify-center shadow-sm hover:shadow-md transition-all text-center">
                 <div>
                   <div className="w-12 h-12 bg-[#1E88E5]/10 rounded-full flex items-center justify-center mx-auto mb-2">

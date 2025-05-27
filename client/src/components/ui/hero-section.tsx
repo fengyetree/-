@@ -44,7 +44,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative h-[500px] bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1000')" }}>
+    <section className="relative h-[500px] bg-cover bg-center" style={{ backgroundImage: "url('https://obs-cq.cucloud.cn/zeno-videofile/files/20240603/0008a5be-2394-4b60-8a4b-86546e633a85.png')" }}>
       <div className="absolute inset-0 bg-black bg-opacity-50"></div>
       <div className="container mx-auto px-4 h-full flex items-center justify-center relative z-10">
         <div className="text-center max-w-3xl">
@@ -56,7 +56,7 @@ export default function HeroSection() {
                 立即报名
               </Button>
             </Link>
-            <Link href="/competition/1">
+            <Link href="/competition/1/districts">
               <Button size="lg" className="bg-[#FFC107] hover:bg-yellow-600 text-white font-medium py-3 px-8 rounded-md transition-all">
                 赛事详情
               </Button>

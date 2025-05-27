@@ -122,21 +122,21 @@ export function setupAuth(app: Express) {
     }
   });
 
-  // // Login endpoint
-  // app.post("/api/login", (req, res, next) => {
-  //   passport.authenticate("local", (err: Error | null, user: any, info: any) => {
-  //     if (err) return next(err);
-  //     if (!user) return res.status(401).json({ message: "用户名或密码错误" });
-  //
-  //     req.login(user, (err: Error | null) => {
-  //       if (err) return next(err);
-  //
-  //       // Don't send the password back to the client
-  //       const { password, ...userWithoutPassword } = user;
-  //       return res.json(userWithoutPassword);
-  //     });
-  //   })(req, res, next);
-  // });
+  // Login endpoint
+  app.post("/api/login", (req, res, next) => {
+    passport.authenticate("local", (err: Error | null, user: any, info: any) => {
+      if (err) return next(err);
+      if (!user) return res.status(401).json({ message: "用户名或密码错误" });
+
+      req.login(user, (err: Error | null) => {
+        if (err) return next(err);
+
+        // Don't send the password back to the client
+        const { password, ...userWithoutPassword } = user;
+        return res.json(userWithoutPassword);
+      });
+    })(req, res, next);
+  });
 
   // Logout endpoint
   // app.post("/api/logout", (req, res, next) => {
@@ -147,13 +147,13 @@ export function setupAuth(app: Express) {
   // });
 
   // Get current user endpoint
-  // app.get("/api/user", (req, res) => {
-  //   if (!req.isAuthenticated()) {
-  //     return res.sendStatus(401);
-  //   }
-  //
-  //   // Don't send the password back to the client
-  //   const { password, ...userWithoutPassword } = req.user;
-  //   res.json(userWithoutPassword);
-  // });
+  app.get("/api/user", (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    // Don't send the password back to the client
+    const { password, ...userWithoutPassword } = req.user;
+    res.json(userWithoutPassword);
+  });
 }

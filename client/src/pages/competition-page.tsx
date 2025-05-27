@@ -37,12 +37,42 @@ export default function CompetitionPage() {
   
   const isRegistrationOpen = registrationDeadline && registrationDeadline > new Date();
 
-  const handleRegister = () => {
-    if (!user) {
-      navigate("/auth");
+  const handleRegister = async (e: React.MouseEvent) => {
+    // 检查是否有token
+    const token = localStorage.getItem('token');
+    if (!token) {
+      e.preventDefault();
+      // 通知父级需要登录
+      window.parent.postMessage({ type: 'NEED_LOGIN' }, '*');
       return;
     }
-    navigate(`/register-competition/${competitionId}`);
+
+    try {
+      // 请求加密接口
+      const response = await fetch('http://localhost:10090/encryptUserInformationToken', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('加密请求失败');
+      }
+
+      const res = await response.json();
+      if (res.code === 200) {
+        const competitionUrl = "http://localhost:3100?auth_code=" + window.encodeURIComponent(res.data);
+        console.log(competitionUrl);
+        // 打开新标签页
+        window.open(competitionUrl, '_blank');
+      }
+    } catch (error) {
+      console.error('加密请求出错:', error);
+      e.preventDefault();
+      return;
+    }
   };
 
   if (isCompetitionLoading) {
@@ -80,11 +110,11 @@ export default function CompetitionPage() {
   return (
     <div className="relative">
       <button
-        onClick={() => navigate("/")}
+        onClick={() => navigate(`/competition/${competitionId}/districts`)}
         className="absolute top-4 left-4 bg-white rounded-full shadow-lg border border-blue-200 p-3 hover:bg-blue-100 hover:text-[#1E88E5] transition z-50 text-lg font-bold text-[#333]"
         style={{ boxShadow: '0 4px 16px rgba(30,136,229,0.10)' }}
       >
-        返回主页
+        返回赛区选择
       </button>
       <Helmet>
         <title>{competition.title} - 全国高校大学生竞赛平台</title>
@@ -96,19 +126,13 @@ export default function CompetitionPage() {
         {/* Hero Banner */}
         <div 
           className="w-full h-64 bg-cover bg-center relative"
-          style={{ 
-            backgroundImage: `url(${competition.imageUrl || 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1000'})` 
+          style={{
+            backgroundImage: `url(https://obs-cq.cucloud.cn/zeno-videofile/files/20240603/0008a5be-2394-4b60-8a4b-86546e633a85.png)`
           }}
         >
-          <div className="absolute inset-0 bg-black bg-opacity-50"></div>
           <div className="container mx-auto px-4 h-full flex items-center relative z-10">
             <div className="text-white">
-              <h1 className="text-3xl md:text-4xl font-bold mb-2">{competition.title}</h1>
-              {track && (
-                <div className="inline-block bg-[#1E88E5]/20 text-white text-sm font-medium px-3 py-1 rounded-full mb-4">
-                  {track.name}
-                </div>
-              )}
+              <h1 className="text-3xl md:text-4xl font-bold mb-2">2024年大学生数据要素素质大赛</h1>
             </div>
           </div>
         </div>
