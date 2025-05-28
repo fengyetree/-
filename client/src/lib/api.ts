@@ -1,6 +1,6 @@
 
 // API 基础配置
-export const API_BASE_URL = import.meta.env.VITE_GLOB_API_URL || 'http://localhost:5000';
+export const API_BASE_URL = import.meta.env.VITE_GLOB_API_URL || '';
 
 // 创建 API 请求函数
 export async function apiRequest<T>(

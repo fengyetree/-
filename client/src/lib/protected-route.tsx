@@ -1,28 +1,40 @@
-import { Route, useRoute } from "wouter";
+
+import { ReactNode } from "react";
+import { useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
-import { Navigate } from "@/components/ui/navigate";
+import { Loader2 } from "lucide-react";
 
-export function ProtectedRoute(Component: React.ComponentType) {
-  return function ProtectedRouteWrapper(props: any) {
-    const { user } = useAuth();
-    const [match, params] = useRoute();
+interface ProtectedRouteProps {
+  children: ReactNode;
+  requireAuth?: boolean;
+  requireAdmin?: boolean;
+}
 
-    if (!user) {
-      return <Navigate to="/login" />;
-  }
+export function ProtectedRoute({ 
+  children, 
+  requireAuth = true, 
+  requireAdmin = false 
+}: ProtectedRouteProps) {
+  const { user, isLoading } = useAuth();
+  const [, navigate] = useLocation();
 
-  // Admin route check
-    if (match && match.toString().startsWith("/admin") && user.role !== "admin") {
+  if (isLoading) {
     return (
-        <div className="min-h-screen bg-[#F5F5F5] flex items-center justify-center">
-          <div className="bg-white p-8 rounded-lg shadow-md text-center">
-            <h1 className="text-2xl font-bold text-red-600 mb-4">访问受限</h1>
-            <p className="text-gray-600">您没有权限访问此页面</p>
-          </div>
-        </div>
+      <div className="min-h-screen bg-[#F5F5F5] flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
     );
   }
 
-    return <Component {...props} />;
-  };
+  if (requireAuth && !user) {
+    navigate("/auth");
+    return null;
+  }
+
+  if (requireAdmin && (!user || user.role !== "admin")) {
+    navigate("/");
+    return null;
+  }
+
+  return <>{children}</>;
 }
