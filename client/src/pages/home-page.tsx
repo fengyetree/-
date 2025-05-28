@@ -7,17 +7,11 @@ import FeaturedCompetitions from "@/components/ui/featured-competitions";
 import PreviousCompetitions from "@/components/ui/previous-competitions";
 import Universities from "@/components/ui/universities";
 import SideNav from "@/components/ui/side-nav";
+import LatestNews from "@/components/ui/latest-news";
 import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet";
-import { HeroSection } from "@/components/ui/hero-section";
-import { FeaturedCompetitions } from "@/components/ui/featured-competitions";
-import { CompetitionTracks } from "@/components/ui/competition-tracks";
-import { CompetitionSchedule } from "@/components/ui/competition-schedule";
-import { LatestNews } from "@/components/ui/latest-news";
-import { PreviousCompetitions } from "@/components/ui/previous-competitions";
 import { competitionService, trackService } from "@/lib/services";
 import { Competition, Track } from "@shared/schema";
-import LatestNews from "@/components/ui/latest-news";
 
 export default function HomePage() {
   const { data: competitions, isLoading: competitionsLoading } = useQuery({
