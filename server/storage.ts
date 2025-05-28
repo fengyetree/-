@@ -9,8 +9,20 @@ import session from "express-session";
 import createMemoryStore from "memorystore";
 import { drizzle } from "drizzle-orm/mysql2";
 import mysql from "mysql2/promise";
+import * as schema from "@shared/schema";
 
 const MemoryStore = createMemoryStore(session);
+
+// Database connection setup
+let db: ReturnType<typeof drizzle> | null = null;
+
+async function getDatabase() {
+  if (!db && process.env.DATABASE_URL) {
+    const connection = await mysql.createConnection(process.env.DATABASE_URL);
+    db = drizzle(connection, { schema, mode: 'default' });
+  }
+  return db;
+}
 
 // CRUD interface for the application
 export interface IStorage {

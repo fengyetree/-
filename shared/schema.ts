@@ -1,9 +1,10 @@
-import { pgTable, text, serial, integer, boolean, timestamp } from "drizzle-orm/pg-core";
+
+import { mysqlTable, text, int, boolean, timestamp } from "drizzle-orm/mysql-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
+export const users = mysqlTable("users", {
+  id: int("id").primaryKey().autoincrement(),
   username: text("username").notNull().unique(),
   password: text("password").notNull(),
   role: text("role").notNull().default("student"),
@@ -20,12 +21,12 @@ export const insertUserSchema = createInsertSchema(users).pick({
   email: true,
 });
 
-export const competitions = pgTable("competitions", {
-  id: serial("id").primaryKey(),
+export const competitions = mysqlTable("competitions", {
+  id: int("id").primaryKey().autoincrement(),
   title: text("title").notNull(),
   description: text("description"),
   imageUrl: text("image_url"),
-  trackId: integer("track_id").notNull(),
+  trackId: int("track_id").notNull(),
   registrationDeadline: timestamp("registration_deadline"),
   startDate: timestamp("start_date"),
   endDate: timestamp("end_date"),
@@ -44,8 +45,8 @@ export const insertCompetitionSchema = createInsertSchema(competitions).pick({
   status: true,
 });
 
-export const tracks = pgTable("tracks", {
-  id: serial("id").primaryKey(),
+export const tracks = mysqlTable("tracks", {
+  id: int("id").primaryKey().autoincrement(),
   name: text("name").notNull(),
   description: text("description"),
   icon: text("icon"),
@@ -58,10 +59,10 @@ export const insertTrackSchema = createInsertSchema(tracks).pick({
   icon: true,
 });
 
-export const registrations = pgTable("registrations", {
-  id: serial("id").primaryKey(),
-  userId: integer("user_id").notNull(),
-  competitionId: integer("competition_id").notNull(),
+export const registrations = mysqlTable("registrations", {
+  id: int("id").primaryKey().autoincrement(),
+  userId: int("user_id").notNull(),
+  competitionId: int("competition_id").notNull(),
   teamName: text("team_name"),
   status: text("status").notNull().default("pending"),
   createdAt: timestamp("created_at").defaultNow(),
