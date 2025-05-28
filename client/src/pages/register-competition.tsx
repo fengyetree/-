@@ -72,26 +72,25 @@ export default function RegisterCompetition() {
         throw new Error("未登录或竞赛ID无效");
       }
 
-      const registrationData = {
+      return registrationService.createRegistration({
         userId: user.id,
         competitionId: parseInt(competitionId),
         teamName: values.teamName,
-        status: "pending"
-      };
-
-      return registrationService.createRegistration(registrationData);
+        status: "pending",
+      });
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`/api/registrations/check/${competitionId}`] });
       toast({
         title: "报名成功",
-        description: "您的报名申请已提交，请等待审核。",
+        description: "您的报名信息已提交，请等待审核",
       });
-      navigate("/");
+      navigate(`/competition/${competitionId}`);
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toast({
         title: "报名失败",
-        description: error.message || "报名过程中发生错误，请重试。",
+        description: error.message,
         variant: "destructive",
       });
     },
@@ -271,35 +270,7 @@ export default function RegisterCompetition() {
       <Footer />
     </div>
   );
-        userId: user.id,
-        competitionId: parseInt(competitionId),
-        teamName: values.teamName,
-        status: "pending",
-      };
-
-      return registrationService.createRegistration({
-        userId: user.id,
-        competitionId: parseInt(competitionId),
-        teamName: values.teamName,
-        status: "pending",
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [`/api/registrations/check/${competitionId}`] });
-      toast({
-        title: "报名成功",
-        description: "您的报名信息已提交，请等待审核",
-      });
-      navigate(`/competition/${competitionId}`);
-    },
-    onError: (error: Error) => {
-      toast({
-        title: "报名失败",
-        description: error.message,
-        variant: "destructive",
-      });
-    },
-  });
+        
 
   const onSubmit = async (values: RegistrationFormValues) => {
     setIsSubmitting(true);
