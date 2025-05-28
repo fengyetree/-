@@ -3,31 +3,29 @@ import { Link } from "wouter";
 import { Helmet } from "react-helmet";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
-import { User } from "@shared/schema";
+import { User, universities as defaultUniversities } from "@shared/schema";
 import { Loader2 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default function AllUniversitiesPage() {
   const { data: users, isLoading } = useQuery<User[]>({
     queryKey: ["/api/users"],
   });
 
-  const [universities, setUniversities] = useState<string[]>([]);
+  // 使用默认大学列表
+  const universities = defaultUniversities;
 
-  useEffect(() => {
-    if (users) {
-      // Get unique universities from users
-      const uniqueUniversities = Array.from(
-        new Set(
-          users
-            .filter(user => user.university && user.university.trim() !== '')
-            .map(user => user.university as string)
-        )
-      ).sort(); // Sort universities alphabetically
-      
-      setUniversities(uniqueUniversities);
-    }
-  }, [users]);
+  if (isLoading) {
+    return (
+      <>
+        <Navbar />
+        <div className="container mx-auto py-16 px-4 flex justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>
@@ -50,28 +48,27 @@ export default function AllUniversitiesPage() {
             </Link>
           </div>
 
-          {isLoading && (
-            <div className="flex justify-center">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            </div>
-          )}
-
-          {!isLoading && universities.length > 0 && (
-            <div className="bg-white rounded-lg p-6 shadow-md">
-              <ul className="list-disc list-inside space-y-2">
-                {universities.map((uni, index) => (
-                  <li key={index} className="text-gray-800">{uni}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {!isLoading && universities.length === 0 && (
-            <div className="bg-white rounded-lg p-6 shadow-md text-center text-gray-600">
-              暂无参赛院校信息。
-            </div>
-          )}
-
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {universities.map((university, index) => (
+              <Card key={index}>
+                <CardContent className="p-6">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-[#1E88E5]/10 rounded-full flex items-center justify-center">
+                      <span className="text-[#1E88E5] font-bold text-lg">
+                        {university.charAt(0)}
+                      </span>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold">{university}</h3>
+                      <p className="text-sm text-gray-500">
+                        {users?.filter(user => user.university === university).length || 0} 名参赛者
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
       </main>
 

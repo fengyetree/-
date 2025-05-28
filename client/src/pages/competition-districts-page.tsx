@@ -68,27 +68,27 @@ export default function CompetitionDistrictsPage() {
               districts.map((district) => (
                 <Card key={district.id}>
                   <CardContent className="p-6">
-                    <Link href={`/competition/${competitionId}`}>
+                    <Link href={`/competition/${competitionId}/districts/${district.id}/register`}>
                       <a>
-                        <div className="flex items-center mb-4">
-                            <MapPin className="h-6 w-6 text-[#1E88E5] mr-3" />
-                            <h2 className="text-xl font-bold">{district.name}</h2>
+                    <div className="flex items-center mb-4">
+                        <MapPin className="h-6 w-6 text-[#1E88E5] mr-3" />
+                        <h2 className="text-xl font-bold">{district.name}</h2>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-gray-700">
+                        <div className="flex items-center">
+                            <Calendar className="h-5 w-5 text-gray-500 mr-2" />
+                            <span>报名时间: {district.registrationDates}</span>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-gray-700">
-                            <div className="flex items-center">
-                                <Calendar className="h-5 w-5 text-gray-500 mr-2" />
-                                <span>报名时间: {district.registrationDates}</span>
-                            </div>
-                             <div className="flex items-center">
-                                <Clock className="h-5 w-5 text-gray-500 mr-2" />
-                                <span>初赛时间: {district.preliminaryDates}</span>
-                            </div>
-                             <div className="flex items-center">
-                                <Clock className="h-5 w-5 text-gray-500 mr-2" />
-                                <span>决赛时间: {district.finalDate}</span>
-                            </div>
+                         <div className="flex items-center">
+                            <Clock className="h-5 w-5 text-gray-500 mr-2" />
+                            <span>初赛时间: {district.preliminaryDates}</span>
                         </div>
-                        {/* TODO: 可以根据需要添加更多赛区相关的详细信息 */}
+                         <div className="flex items-center">
+                            <Clock className="h-5 w-5 text-gray-500 mr-2" />
+                            <span>决赛时间: {district.finalDate}</span>
+                        </div>
+                    </div>
+                    {/* TODO: 可以根据需要添加更多赛区相关的详细信息 */}
                       </a>
                     </Link>
                   </CardContent>

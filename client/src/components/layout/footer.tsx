@@ -25,29 +25,29 @@ export default function Footer() {
             <h4 className="text-lg font-semibold mb-4">快速链接</h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/">
-                  <a className="text-gray-400 hover:text-white">首页</a>
-                </Link>
+                
+                  <a href="/" className="text-gray-400 hover:text-white">首页</a>
+                
               </li>
               <li>
-                <Link href="/">
-                  <a className="text-gray-400 hover:text-white">赛事信息</a>
-                </Link>
+                
+                  <a href="/" className="text-gray-400 hover:text-white">赛事信息</a>
+                
               </li>
               <li>
-                <Link href="/">
-                  <a className="text-gray-400 hover:text-white">参赛指南</a>
-                </Link>
+                
+                  <a href="/" className="text-gray-400 hover:text-white">参赛指南</a>
+                
               </li>
               <li>
-                <Link href="/">
-                  <a className="text-gray-400 hover:text-white">新闻公告</a>
-                </Link>
+                
+                  <a href="/" className="text-gray-400 hover:text-white">新闻公告</a>
+                
               </li>
               <li>
-                <Link href="/">
+                
                   <a className="text-gray-400 hover:text-white">关于我们</a>
-                </Link>
+                
               </li>
             </ul>
           </div>

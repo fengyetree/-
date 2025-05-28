@@ -316,8 +316,8 @@ async function initializeData() {
         const trackId = tracks[0].id;
 
         await storage.createCompetition({
-          title: "2024年大学生数据要素素质大赛",
-          description: "聚焦新时代创新创业，汇聚青年智慧，探索科技前沿，推动创业实践，打造全方位创新创业竞赛平台。",
+          title: "2025年（第二届）大学生数据要素素质大赛",
+          description: "为深入贯彻中央《提升全民数字素养与技能行动纲要》及《2024年提升全民数字素养与技能工作要点》等一系列文件精神，积极响应国家经济社会数字化转型的迫切需求，加速培养具备高水平数据素养的复合型人才，由全国数据工程教学联盟发起举办“2024年大学生数据要素素质大赛”。",
           imageUrl: "https://obs-cq.cucloud.cn/zeno-videofile/files/20240603/0008a5be-2394-4b60-8a4b-86546e633a85.png",
           trackId: trackId,
           registrationDeadline: new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000), // 30 days from now

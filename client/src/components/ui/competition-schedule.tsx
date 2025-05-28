@@ -1,31 +1,33 @@
+import { Link } from "wouter";
+
 export default function CompetitionSchedule() {
   const scheduleStages = [
     {
       id: 1,
       stage: "报名阶段",
       title: "项目报名与审核",
-      date: "2023年9月1日 - 10月15日",
+      date: "9月1日 - 10月15日",
       description: "开放所有赛道报名通道，提交项目计划书进行资格审核"
     },
     {
       id: 2,
       stage: "初赛阶段",
       title: "初赛评审与筛选",
-      date: "2023年10月20日 - 11月5日",
+      date: "10月20日 - 11月5日",
       description: "各赛道专家评审团对项目进行初步评估，选拔优秀项目进入复赛"
     },
     {
       id: 3,
       stage: "复赛阶段",
       title: "项目展示与答辩",
-      date: "2023年11月15日 - 12月5日",
+      date: "11月15日 - 12月5日",
       description: "复赛团队进行线上项目展示与答辩，展现项目价值与可行性"
     },
     {
       id: 4,
       stage: "决赛阶段",
       title: "全国总决赛",
-      date: "2023年12月20日 - 12月22日",
+      date: "12月20日 - 12月22日",
       description: "优秀团队齐聚北京，进行现场路演与展示，角逐全国总冠军"
     }
   ];

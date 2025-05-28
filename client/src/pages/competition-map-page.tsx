@@ -15,6 +15,8 @@ import {
 } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
 import type { EChartsType, EChartsCoreOption } from 'echarts/core';
+import { useQuery } from "@tanstack/react-query";
+import { Competition } from "@shared/schema";
 
 
 // 注册 ECharts 组件
@@ -90,11 +92,17 @@ const data = [
 
 
 export default function CompetitionMapPage() {
+  // const [, params] = useRoute("/competition/:id");
   const [, params] = useRoute("/competition/:id/map");
   const competitionId = params?.id;
   const [, navigate] = useLocation();
   const chartRef = useRef<HTMLDivElement>(null);
   const chartInstance = useRef<EChartsType | null>(null);
+
+  const { data: competition } = useQuery<Competition>({
+    queryKey: [`/api/competitions/${competitionId}`],
+    enabled: !!competitionId,
+  });
 
   useEffect(() => {
     if (chartRef.current) {
@@ -185,7 +193,7 @@ export default function CompetitionMapPage() {
   }, [competitionId, navigate]); // 添加依赖项
 
   // TODO: 根据实际情况获取比赛名称
-  const competitionName = "当前比赛名称 (Placeholder)";
+  const competitionName = competition?.title || '加载中...';
 
   return (
     <>

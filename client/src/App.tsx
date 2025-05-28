@@ -20,6 +20,7 @@ import CompetitionDistrictsPage from "@/pages/competition-districts-page";
 import CompetitionMapPage from "@/pages/competition-map-page";
 import AllUniversitiesPage from "@/pages/all-universities-page";
 import LoginPage from "@/pages/login-page";
+import DistrictRegistrationPage from "@/pages/district-registration-page";
 
 function Router() {
   return (
@@ -30,10 +31,12 @@ function Router() {
       <Route path="/competition/:id/register" component={RegisterCompetition} />
       <Route path="/competition/:id/districts" component={CompetitionDistrictsPage} />
       <Route path="/competition/:id/map" component={CompetitionMapPage} />
+      <Route path="/competition/:competitionId/districts/:districtId/register" component={DistrictRegistrationPage} />
       <Route path="/track/:id" component={TrackDetailsPage} />
       <Route path="/tracks" component={TracksListPage} />
       <Route path="/case/:id" component={CaseDetails} />
       <Route path="/universities" component={AllUniversitiesPage} />
+      <Route path="/universities/all" component={AllUniversitiesPage} />
       <Route path="/admin" component={ProtectedRoute(AdminDashboard)} />
       <Route path="/admin/competitions" component={ProtectedRoute(AdminCompetitions)} />
       <Route path="/admin/participants" component={ProtectedRoute(AdminParticipants)} />
@@ -61,11 +64,11 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <TooltipProvider>
+      <TooltipProvider>
           <Router />
           <Toaster />
         </TooltipProvider>
-      </AuthProvider>
+        </AuthProvider>
     </QueryClientProvider>
   );
 }

@@ -9,19 +9,19 @@ export function ProtectedRoute(Component: React.ComponentType) {
 
     if (!user) {
       return <Navigate to="/login" />;
-    }
+  }
 
-    // Admin route check
+  // Admin route check
     if (match && match.toString().startsWith("/admin") && user.role !== "admin") {
-      return (
+    return (
         <div className="min-h-screen bg-[#F5F5F5] flex items-center justify-center">
           <div className="bg-white p-8 rounded-lg shadow-md text-center">
             <h1 className="text-2xl font-bold text-red-600 mb-4">访问受限</h1>
             <p className="text-gray-600">您没有权限访问此页面</p>
           </div>
         </div>
-      );
-    }
+    );
+  }
 
     return <Component {...props} />;
   };
