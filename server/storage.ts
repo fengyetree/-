@@ -7,6 +7,8 @@ import {
 import session from "express-session";
 // import type { SessionStore } from "express-session";
 import createMemoryStore from "memorystore";
+import { drizzle } from "drizzle-orm/mysql2";
+import mysql from "mysql2/promise";
 
 const MemoryStore = createMemoryStore(session);
 
