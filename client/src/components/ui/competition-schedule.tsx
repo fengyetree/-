@@ -1,36 +1,109 @@
+
 import { Link } from "wouter";
+import { useQuery } from "@tanstack/react-query";
+
+// 静态赛程阶段数据
+const scheduleStages = [
+  {
+    id: 1,
+    stage: "报名阶段",
+    title: "项目报名与审核",
+    description: "开放所有赛道报名通道，提交项目计划书进行资格审核"
+  },
+  {
+    id: 2,
+    stage: "初赛阶段",
+    title: "初赛评审与筛选",
+    description: "各赛道专家评审团对项目进行初步评估，选拔优秀项目进入复赛"
+  },
+  {
+    id: 3,
+    stage: "复赛阶段",
+    title: "项目展示与答辩",
+    description: "复赛团队进行线上项目展示与答辩，展现项目价值与可行性"
+  },
+  {
+    id: 4,
+    stage: "决赛阶段",
+    title: "全国总决赛",
+    description: "优秀团队齐聚北京，进行现场路演与展示，角逐全国总冠军"
+  }
+];
+
+// 静态分赛区数据
+const districts = [
+  {
+    name: "华北赛区",
+    region: "north"
+  },
+  {
+    name: "华东赛区",
+    region: "east"
+  },
+  {
+    name: "西南赛区",
+    region: "southwest"
+  },
+  {
+    name: "东北赛区",
+    region: "northeast"
+  }
+];
+
+// 时间数据接口类型
+interface ScheduleTimeline {
+  stages: Array<{
+    stageId: number;
+    dateRange: string;
+  }>;
+  districts: Array<{
+    region: string;
+    registrationDates: string;
+    preliminaryDates: string;
+    finalDate: string;
+  }>;
+}
 
 export default function CompetitionSchedule() {
-  const scheduleStages = [
-    {
-      id: 1,
-      stage: "报名阶段",
-      title: "项目报名与审核",
-      date: "9月1日 - 10月15日",
-      description: "开放所有赛道报名通道，提交项目计划书进行资格审核"
-    },
-    {
-      id: 2,
-      stage: "初赛阶段",
-      title: "初赛评审与筛选",
-      date: "10月20日 - 11月5日",
-      description: "各赛道专家评审团对项目进行初步评估，选拔优秀项目进入复赛"
-    },
-    {
-      id: 3,
-      stage: "复赛阶段",
-      title: "项目展示与答辩",
-      date: "11月15日 - 12月5日",
-      description: "复赛团队进行线上项目展示与答辩，展现项目价值与可行性"
-    },
-    {
-      id: 4,
-      stage: "决赛阶段",
-      title: "全国总决赛",
-      date: "12月20日 - 12月22日",
-      description: "优秀团队齐聚北京，进行现场路演与展示，角逐全国总冠军"
+  // 获取时间数据的API接口
+  const { data: timeline, isLoading } = useQuery<ScheduleTimeline>({
+    queryKey: ['/api/competition-timeline'],
+    queryFn: async () => {
+      // 这里可以替换为实际的API调用
+      // const response = await fetch('/api/competition-timeline');
+      // return response.json();
+      
+      // 暂时返回模拟数据，等API准备好后可以替换
+      return {
+        stages: [
+          { stageId: 1, dateRange: "9月1日 - 10月15日" },
+          { stageId: 2, dateRange: "10月20日 - 11月5日" },
+          { stageId: 3, dateRange: "11月15日 - 12月5日" },
+          { stageId: 4, dateRange: "12月20日 - 12月22日" }
+        ],
+        districts: [
+          { region: "north", registrationDates: "2023-09-01 ~ 09-20", preliminaryDates: "2023-10-10 ~ 10-15", finalDate: "2023-12-10" },
+          { region: "east", registrationDates: "2023-09-05 ~ 09-25", preliminaryDates: "2023-10-12 ~ 10-18", finalDate: "2023-12-12" },
+          { region: "southwest", registrationDates: "2023-09-10 ~ 09-28", preliminaryDates: "2023-10-15 ~ 10-20", finalDate: "2023-12-15" },
+          { region: "northeast", registrationDates: "2023-09-12 ~ 09-30", preliminaryDates: "2023-10-18 ~ 10-22", finalDate: "2023-12-18" }
+        ]
+      };
     }
-  ];
+  });
+
+  // 获取指定阶段的时间范围
+  const getStageDate = (stageId: number) => {
+    if (!timeline) return "待定";
+    const stage = timeline.stages.find(s => s.stageId === stageId);
+    return stage ? stage.dateRange : "待定";
+  };
+
+  // 获取指定赛区的时间信息
+  const getDistrictTimes = (region: string) => {
+    if (!timeline) return { registrationDates: "待定", preliminaryDates: "待定", finalDate: "待定" };
+    const district = timeline.districts.find(d => d.region === region);
+    return district ? district : { registrationDates: "待定", preliminaryDates: "待定", finalDate: "待定" };
+  };
 
   return (
     <section className="py-16 bg-[#F5F5F5]">
@@ -56,7 +129,9 @@ export default function CompetitionSchedule() {
                           {stage.stage}
                         </span>
                         <h3 className="text-xl font-semibold mb-1">{stage.title}</h3>
-                        <p className="text-gray-500 text-sm mb-2">{stage.date}</p>
+                        <p className="text-gray-500 text-sm mb-2">
+                          {isLoading ? "加载中..." : getStageDate(stage.id)}
+                        </p>
                         <p className="text-gray-600">{stage.description}</p>
                       </div>
                     </div>
@@ -71,7 +146,9 @@ export default function CompetitionSchedule() {
                           {stage.stage}
                         </span>
                         <h3 className="text-xl font-semibold mb-1">{stage.title}</h3>
-                        <p className="text-gray-500 text-sm mb-2">{stage.date}</p>
+                        <p className="text-gray-500 text-sm mb-2">
+                          {isLoading ? "加载中..." : getStageDate(stage.id)}
+                        </p>
                         <p className="text-gray-600">{stage.description}</p>
                       </div>
                     </div>
@@ -84,6 +161,7 @@ export default function CompetitionSchedule() {
           </div>
         </div>
       </div>
+      
       {/* 分赛区节点时间表 */}
       <div className="container mx-auto px-4 mt-12">
         <h3 className="text-2xl font-bold mb-4 text-[#1E88E5]">分赛区节点时间表</h3>
@@ -99,34 +177,26 @@ export default function CompetitionSchedule() {
               </tr>
             </thead>
             <tbody>
-              <tr className="even:bg-blue-50 hover:bg-blue-100 transition">
-                <td className="py-3 px-4 font-semibold text-blue-700">华北赛区</td>
-                <td className="py-3 px-4">2023-09-01 ~ 09-20</td>
-                <td className="py-3 px-4">2023-10-10 ~ 10-15</td>
-                <td className="py-3 px-4">2023-11-01 ~ 11-05</td>
-                <td className="py-3 px-4">2023-12-10</td>
-              </tr>
-              <tr className="even:bg-blue-50 hover:bg-blue-100 transition">
-                <td className="py-3 px-4 font-semibold text-blue-700">华东赛区</td>
-                <td className="py-3 px-4">2023-09-05 ~ 09-25</td>
-                <td className="py-3 px-4">2023-10-12 ~ 10-18</td>
-                <td className="py-3 px-4">2023-11-03 ~ 11-08</td>
-                <td className="py-3 px-4">2023-12-12</td>
-              </tr>
-              <tr className="even:bg-blue-50 hover:bg-blue-100 transition">
-                <td className="py-3 px-4 font-semibold text-blue-700">西南赛区</td>
-                <td className="py-3 px-4">2023-09-10 ~ 09-28</td>
-                <td className="py-3 px-4">2023-10-15 ~ 10-20</td>
-                <td className="py-3 px-4">2023-11-06 ~ 11-12</td>
-                <td className="py-3 px-4">2023-12-15</td>
-              </tr>
-              <tr className="even:bg-blue-50 hover:bg-blue-100 transition">
-                <td className="py-3 px-4 font-semibold text-blue-700">东北赛区</td>
-                <td className="py-3 px-4">2023-09-12 ~ 09-30</td>
-                <td className="py-3 px-4">2023-10-18 ~ 10-22</td>
-                <td className="py-3 px-4">2023-11-10 ~ 11-15</td>
-                <td className="py-3 px-4">2023-12-18</td>
-              </tr>
+              {districts.map((district, index) => {
+                const times = getDistrictTimes(district.region);
+                return (
+                  <tr key={district.region} className="even:bg-blue-50 hover:bg-blue-100 transition">
+                    <td className="py-3 px-4 font-semibold text-blue-700">{district.name}</td>
+                    <td className="py-3 px-4">
+                      {isLoading ? "加载中..." : times.registrationDates}
+                    </td>
+                    <td className="py-3 px-4">
+                      {isLoading ? "加载中..." : times.preliminaryDates}
+                    </td>
+                    <td className="py-3 px-4">
+                      {isLoading ? "加载中..." : times.preliminaryDates}
+                    </td>
+                    <td className="py-3 px-4">
+                      {isLoading ? "加载中..." : times.finalDate}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

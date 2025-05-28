@@ -141,6 +141,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // === TIMELINE ROUTES ===
+
+  // Get competition timeline (时间数据API接口)
+  app.get("/api/competition-timeline", async (req, res) => {
+    try {
+      // 这里可以从数据库获取实际的时间数据
+      // 目前返回静态数据，将来可以根据需要修改为动态数据
+      const timeline = {
+        stages: [
+          { stageId: 1, dateRange: "9月1日 - 10月15日" },
+          { stageId: 2, dateRange: "10月20日 - 11月5日" },
+          { stageId: 3, dateRange: "11月15日 - 12月5日" },
+          { stageId: 4, dateRange: "12月20日 - 12月22日" }
+        ],
+        districts: [
+          { region: "north", registrationDates: "2023-09-01 ~ 09-20", preliminaryDates: "2023-10-10 ~ 10-15", finalDate: "2023-12-10" },
+          { region: "east", registrationDates: "2023-09-05 ~ 09-25", preliminaryDates: "2023-10-12 ~ 10-18", finalDate: "2023-12-12" },
+          { region: "southwest", registrationDates: "2023-09-10 ~ 09-28", preliminaryDates: "2023-10-15 ~ 10-20", finalDate: "2023-12-15" },
+          { region: "northeast", registrationDates: "2023-09-12 ~ 09-30", preliminaryDates: "2023-10-18 ~ 10-22", finalDate: "2023-12-18" }
+        ]
+      };
+      
+      res.json(timeline);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch timeline" });
+    }
+  });
+
   // === REGISTRATIONS ROUTES ===
 
   // Get all registrations (admin only)
