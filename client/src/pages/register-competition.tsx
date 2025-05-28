@@ -47,13 +47,13 @@ export default function RegisterCompetition() {
   const { data: competition, isLoading: isCompetitionLoading } = useQuery<Competition>({
     queryKey: [`/api/competitions/${competitionId}`],
     enabled: !!competitionId,
-    queryFn: () => competitionService.getCompetition(parseInt(competitionId as string)), // Type assertion added
+    queryFn: () => competitionService.getCompetition(parseInt(competitionId as string)),
   });
 
   const { data: isRegistered } = useQuery<boolean>({
     queryKey: [`/api/registrations/check/${competitionId}`],
     enabled: !!competitionId && !!user,
-    queryFn: () => registrationService.checkRegistration(parseInt(competitionId as string)), // Type assertion added
+    queryFn: () => registrationService.checkRegistration(parseInt(competitionId as string)),
   });
 
   const form = useForm<RegistrationFormValues>({
@@ -145,187 +145,6 @@ export default function RegisterCompetition() {
         </main>
         <Footer />
       </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-[#F5F5F5]">
-      <Helmet>
-        <title>报名参赛 - {competition.title}</title>
-      </Helmet>
-      
-      <Navbar />
-      
-      <main className="container mx-auto px-4 py-8">
-        <div className="max-w-2xl mx-auto">
-          <Button 
-            onClick={() => navigate("/")} 
-            variant="ghost" 
-            className="mb-6"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            返回
-          </Button>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>报名参赛</CardTitle>
-              <CardDescription>
-                报名参加"{competition.title}"
-              </CardDescription>
-            </CardHeader>
-            
-            <CardContent>
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  <FormField
-                    control={form.control}
-                    name="teamName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>团队名称</FormLabel>
-                        <FormControl>
-                          <Input placeholder="请输入团队名称" {...field} />
-                        </FormControl>
-                        <FormDescription>
-                          请输入一个有意义的团队名称
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="teamMembers"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>团队成员</FormLabel>
-                        <FormControl>
-                          <Textarea 
-                            placeholder="请输入团队成员信息，包括姓名、学校、专业等"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormDescription>
-                          请详细填写所有团队成员的基本信息
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="projectTitle"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>项目名称</FormLabel>
-                        <FormControl>
-                          <Input placeholder="请输入项目名称" {...field} />
-                        </FormControl>
-                        <FormDescription>
-                          简洁明了地描述您的项目
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="projectDescription"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>项目描述</FormLabel>
-                        <FormControl>
-                          <Textarea 
-                            placeholder="请详细描述您的项目内容、创新点、技术方案等"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormDescription>
-                          详细描述项目的背景、目标、技术方案和预期成果
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <Button 
-                    type="submit" 
-                    className="w-full" 
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    提交报名
-                  </Button>
-                </form>
-              </Form>
-            </CardContent>
-          </Card>
-        </div>
-      </main>
-      
-      <Footer />
-    </div>
-  );
-        
-
-  const onSubmit = async (values: RegistrationFormValues) => {
-    setIsSubmitting(true);
-    try {
-      await registerMutation.mutateAsync(values);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  if (isCompetitionLoading) {
-    return (
-      <>
-        <Navbar />
-        <div className="container mx-auto py-16 px-4 flex justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        </div>
-        <Footer />
-      </>
-    );
-  }
-
-  if (!competition) {
-    return (
-      <>
-        <Navbar />
-        <div className="container mx-auto py-16 px-4">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4">赛事不存在</h1>
-            <p className="mb-6">抱歉，您查询的赛事不存在或已被删除。</p>
-            <Button onClick={() => navigate("/")} variant="secondary">
-              返回首页
-            </Button>
-          </div>
-        </div>
-        <Footer />
-      </>
-    );
-  }
-
-  if (isRegistered) {
-    return (
-      <>
-        <Navbar />
-        <div className="container mx-auto py-16 px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-2xl font-bold mb-4">您已报名此赛事</h1>
-            <p className="mb-6">您已经成功报名参加 {competition.title}，无需重复报名。</p>
-            <Button onClick={() => navigate(`/competition/${competitionId}`)} variant="secondary">
-              返回赛事详情
-            </Button>
-          </div>
-        </div>
-        <Footer />
-      </>
     );
   }
 
