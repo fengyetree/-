@@ -25,6 +25,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, ArrowLeft } from "lucide-react";
 import { Helmet } from "react-helmet";
+import { competitionService, registrationService } from "@/lib/services";
 
 const registrationSchema = z.object({
   teamName: z.string().min(2, "团队名称至少需要2个字符").max(50, "团队名称不能超过50个字符"),
@@ -46,11 +47,13 @@ export default function RegisterCompetition() {
   const { data: competition, isLoading: isCompetitionLoading } = useQuery<Competition>({
     queryKey: [`/api/competitions/${competitionId}`],
     enabled: !!competitionId,
+    queryFn: () => competitionService.getCompetition(parseInt(competitionId as string)), // Type assertion added
   });
 
   const { data: isRegistered } = useQuery<boolean>({
     queryKey: [`/api/registrations/check/${competitionId}`],
     enabled: !!competitionId && !!user,
+    queryFn: () => registrationService.checkRegistration(parseInt(competitionId as string)), // Type assertion added
   });
 
   const form = useForm<RegistrationFormValues>({
@@ -68,16 +71,20 @@ export default function RegisterCompetition() {
       if (!user || !competitionId) {
         throw new Error("未登录或竞赛ID无效");
       }
-      
+
       const registrationData = {
         userId: user.id,
         competitionId: parseInt(competitionId),
         teamName: values.teamName,
         status: "pending",
       };
-      
-      const res = await apiRequest("POST", "/api/registrations", registrationData);
-      return await res.json();
+
+      return registrationService.createRegistration({
+        userId: user.id,
+        competitionId: parseInt(competitionId),
+        teamName: values.teamName,
+        status: "pending",
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`/api/registrations/check/${competitionId}`] });
@@ -160,7 +167,7 @@ export default function RegisterCompetition() {
         <meta name="description" content={`报名参加${competition.title}，填写团队信息和项目提案，展示您的创新能力！`} />
       </Helmet>
       <Navbar />
-      
+
       <div className="bg-[#F5F5F5] min-h-screen py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
@@ -172,7 +179,7 @@ export default function RegisterCompetition() {
               <ArrowLeft className="mr-2 h-4 w-4" />
               返回赛事详情
             </Button>
-            
+
             <Card>
               <CardHeader>
                 <CardTitle>报名参赛 - {competition.title}</CardTitle>
@@ -199,7 +206,7 @@ export default function RegisterCompetition() {
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField
                       control={form.control}
                       name="teamMembers"
@@ -220,7 +227,7 @@ export default function RegisterCompetition() {
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField
                       control={form.control}
                       name="projectTitle"
@@ -237,7 +244,7 @@ export default function RegisterCompetition() {
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField
                       control={form.control}
                       name="projectDescription"
@@ -258,7 +265,7 @@ export default function RegisterCompetition() {
                         </FormItem>
                       )}
                     />
-                    
+
                     <div className="flex justify-end">
                       <Button 
                         type="submit" 
@@ -277,7 +284,7 @@ export default function RegisterCompetition() {
           </div>
         </div>
       </div>
-      
+
       <Footer />
     </>
   );

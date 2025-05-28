@@ -8,20 +8,26 @@ import PreviousCompetitions from "@/components/ui/previous-competitions";
 import Universities from "@/components/ui/universities";
 import SideNav from "@/components/ui/side-nav";
 import { useQuery } from "@tanstack/react-query";
-import { Competition, Track } from "@shared/schema";
 import { Helmet } from "react-helmet";
+import { HeroSection } from "@/components/ui/hero-section";
+import { FeaturedCompetitions } from "@/components/ui/featured-competitions";
+import { CompetitionTracks } from "@/components/ui/competition-tracks";
+import { CompetitionSchedule } from "@/components/ui/competition-schedule";
+import { LatestNews } from "@/components/ui/latest-news";
+import { PreviousCompetitions } from "@/components/ui/previous-competitions";
+import { competitionService, trackService } from "@/lib/services";
+import { Competition, Track } from "@shared/schema";
 import LatestNews from "@/components/ui/latest-news";
 
 export default function HomePage() {
-  // 获取竞赛数据api接口
-  const { data: competitions } = useQuery<Competition[]>({
-    queryKey: ["/api/competitions"],
+  const { data: competitions, isLoading: competitionsLoading } = useQuery({
+    queryKey: ["competitions"],
+    queryFn: competitionService.getAllCompetitions,
   });
-  // 获取竞赛数据 如果没有数据则返回空数组，然后调用FeaturedCompetitions组件
-  // const competitions: Competition[] = [];
 
-  const { data: tracks } = useQuery<Track[]>({
-    queryKey: ["/api/tracks"],
+  const { data: tracks, isLoading: tracksLoading } = useQuery({
+    queryKey: ["tracks"],
+    queryFn: trackService.getAllTracks,
   });
 
   const featuredCompetitions = competitions/*?.filter(comp => 

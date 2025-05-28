@@ -9,6 +9,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { Loader2, Calendar, Users, Award, School, Clock } from "lucide-react";
 import { format } from "date-fns";
 import { Helmet } from "react-helmet";
+import { competitionService } from "@/lib/services";
 
 export default function CompetitionPage() {
   const [, params] = useRoute("/competition/:id");
@@ -17,7 +18,8 @@ export default function CompetitionPage() {
   const competitionId = params?.id;
 
   const { data: competition, isLoading: isCompetitionLoading } = useQuery<Competition>({
-    queryKey: [`/api/competitions/${competitionId}`],
+    queryKey: ["competition", competitionId],
+    queryFn: () => competitionService.getCompetition(parseInt(competitionId)),
     enabled: !!competitionId,
   });
 
@@ -34,7 +36,7 @@ export default function CompetitionPage() {
   const registrationDeadline = competition?.registrationDeadline 
     ? new Date(competition.registrationDeadline)
     : null;
-  
+
   const isRegistrationOpen = registrationDeadline && registrationDeadline > new Date();
 
   if (isCompetitionLoading) {
@@ -83,7 +85,7 @@ export default function CompetitionPage() {
         <meta name="description" content={competition.description || `查看${competition.title}详情并参与报名。全国高校大学生竞赛平台为全国大学生提供优质竞赛服务。`} />
       </Helmet>
       <Navbar />
-      
+
       <main className="bg-[#F5F5F5] min-h-screen">
         {/* Hero Banner */}
         <div 
@@ -98,7 +100,7 @@ export default function CompetitionPage() {
             </div>
           </div>
         </div>
-        
+
         {/* Competition Details */}
         <div className="container mx-auto px-4 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -109,7 +111,7 @@ export default function CompetitionPage() {
                   <h2 className="text-2xl font-bold mb-6">赛事详情</h2>
                   <div className="prose max-w-none">
                     <p className="text-gray-700 mb-6">{competition.description}</p>
-                    
+
                     <h3 className="text-xl font-semibold mb-4">赛事亮点</h3>
                     <ul className="space-y-2 mb-6">
                       <li className="flex items-start">
@@ -131,7 +133,7 @@ export default function CompetitionPage() {
                         <span>优秀项目有机会获得风险投资和创业扶持</span>
                       </li>
                     </ul>
-                    
+
                     <h3 className="text-xl font-semibold mb-4">参赛规则</h3>
                     <p>1. 参赛对象：全国高校在校学生，可跨校组队</p>
                     <p>2. 团队规模：每队人数3-5人，需设一名队长</p>
@@ -142,13 +144,13 @@ export default function CompetitionPage() {
                 </CardContent>
               </Card>
             </div>
-            
+
             {/* Sidebar */}
             <div>
               <Card className="mb-6">
                 <CardContent className="p-6">
                   <h3 className="text-lg font-semibold mb-4">报名信息</h3>
-                  
+
                   <div className="space-y-4 mb-6">
                     <div className="flex items-center">
                       <Calendar className="h-5 w-5 text-[#1E88E5] mr-3" />
@@ -159,7 +161,7 @@ export default function CompetitionPage() {
                         </p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center">
                       <Users className="h-5 w-5 text-[#1E88E5] mr-3" />
                       <div>
@@ -167,7 +169,7 @@ export default function CompetitionPage() {
                         <p className="font-medium">已有165支队伍报名</p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center">
                       <School className="h-5 w-5 text-[#1E88E5] mr-3" />
                       <div>
@@ -175,7 +177,7 @@ export default function CompetitionPage() {
                         <p className="font-medium">来自28所高校</p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center">
                       <Award className="h-5 w-5 text-[#1E88E5] mr-3" />
                       <div>
@@ -183,7 +185,7 @@ export default function CompetitionPage() {
                         <p className="font-medium">金奖(3名)、银奖(5名)、铜奖(10名)</p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center">
                       <Clock className="h-5 w-5 text-[#1E88E5] mr-3" />
                       <div>
@@ -196,7 +198,7 @@ export default function CompetitionPage() {
                       </div>
                     </div>
                   </div>
-                  
+
                   {isRegistered ? (
                     <Button className="w-full bg-green-600 hover:bg-green-700" disabled>
                       已报名
@@ -216,7 +218,7 @@ export default function CompetitionPage() {
                   )}
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardContent className="p-6">
                   <h3 className="text-lg font-semibold mb-4">主办单位</h3>
@@ -227,14 +229,14 @@ export default function CompetitionPage() {
                       </div>
                       <span>中国高等教育学会</span>
                     </div>
-                    
+
                     <div className="flex items-center">
                       <div className="w-10 h-10 bg-[#1E88E5]/10 rounded-full flex items-center justify-center mr-3">
                         <span className="text-[#1E88E5] font-bold text-sm">承办</span>
                       </div>
                       <span>全国高校创新创业教育联盟</span>
                     </div>
-                    
+
                     <div className="flex items-center">
                       <div className="w-10 h-10 bg-[#1E88E5]/10 rounded-full flex items-center justify-center mr-3">
                         <span className="text-[#1E88E5] font-bold text-sm">协办</span>
@@ -248,7 +250,7 @@ export default function CompetitionPage() {
           </div>
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );

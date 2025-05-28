@@ -23,7 +23,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -64,6 +63,7 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 import { Helmet } from "react-helmet";
+import { competitionService, trackService } from "@/lib/services";
 
 // Competition form schema
 const competitionFormSchema = insertCompetitionSchema.extend({
@@ -92,12 +92,14 @@ export default function AdminCompetitions() {
   const { toast } = useToast();
 
   // Queries
-  const { data: competitions, isLoading: isLoadingCompetitions } = useQuery<Competition[]>({
+  const { data: competitions, isLoading: isLoadingCompetitions } = useQuery({
     queryKey: ["/api/competitions"],
+    queryFn: competitionService.getAllCompetitions,
   });
 
-  const { data: tracks, isLoading: isLoadingTracks } = useQuery<Track[]>({
+  const { data: tracks, isLoading: isLoadingTracks } = useQuery({
     queryKey: ["/api/tracks"],
+    queryFn: trackService.getAllTracks,
   });
 
   // Competition form
@@ -323,7 +325,7 @@ export default function AdminCompetitions() {
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField
                       control={trackForm.control}
                       name="description"
@@ -337,7 +339,7 @@ export default function AdminCompetitions() {
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField
                       control={trackForm.control}
                       name="icon"
@@ -365,7 +367,7 @@ export default function AdminCompetitions() {
                         </FormItem>
                       )}
                     />
-                    
+
                     <DialogFooter>
                       <Button type="submit" className="bg-[#1E88E5]" disabled={createTrackMutation.isPending}>
                         {createTrackMutation.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -376,7 +378,7 @@ export default function AdminCompetitions() {
                 </Form>
               </DialogContent>
             </Dialog>
-            
+
             <Dialog open={isAddingCompetition} onOpenChange={setIsAddingCompetition}>
               <DialogTrigger asChild>
                 <Button className="bg-[#1E88E5]">
@@ -406,7 +408,7 @@ export default function AdminCompetitions() {
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField
                       control={competitionForm.control}
                       name="description"
@@ -420,7 +422,7 @@ export default function AdminCompetitions() {
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField
                       control={competitionForm.control}
                       name="imageUrl"
@@ -437,7 +439,7 @@ export default function AdminCompetitions() {
                         </FormItem>
                       )}
                     />
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <FormField
                         control={competitionForm.control}
@@ -466,7 +468,7 @@ export default function AdminCompetitions() {
                           </FormItem>
                         )}
                       />
-                      
+
                       <FormField
                         control={competitionForm.control}
                         name="status"
@@ -493,7 +495,7 @@ export default function AdminCompetitions() {
                         )}
                       />
                     </div>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <FormField
                         control={competitionForm.control}
@@ -516,7 +518,7 @@ export default function AdminCompetitions() {
                           </FormItem>
                         )}
                       />
-                      
+
                       <FormField
                         control={competitionForm.control}
                         name="startDate"
@@ -538,7 +540,7 @@ export default function AdminCompetitions() {
                           </FormItem>
                         )}
                       />
-                      
+
                       <FormField
                         control={competitionForm.control}
                         name="endDate"
@@ -561,7 +563,7 @@ export default function AdminCompetitions() {
                         )}
                       />
                     </div>
-                    
+
                     <DialogFooter>
                       <Button 
                         type="submit" 
@@ -577,7 +579,7 @@ export default function AdminCompetitions() {
                 </Form>
               </DialogContent>
             </Dialog>
-            
+
             <Dialog open={isEditingCompetition} onOpenChange={setIsEditingCompetition}>
               <DialogContent className="max-w-3xl">
                 <DialogHeader>
@@ -601,7 +603,7 @@ export default function AdminCompetitions() {
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField
                       control={competitionForm.control}
                       name="description"
@@ -615,7 +617,7 @@ export default function AdminCompetitions() {
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField
                       control={competitionForm.control}
                       name="imageUrl"
@@ -632,7 +634,7 @@ export default function AdminCompetitions() {
                         </FormItem>
                       )}
                     />
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <FormField
                         control={competitionForm.control}
@@ -661,7 +663,7 @@ export default function AdminCompetitions() {
                           </FormItem>
                         )}
                       />
-                      
+
                       <FormField
                         control={competitionForm.control}
                         name="status"
@@ -688,7 +690,7 @@ export default function AdminCompetitions() {
                         )}
                       />
                     </div>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <FormField
                         control={competitionForm.control}
@@ -711,7 +713,7 @@ export default function AdminCompetitions() {
                           </FormItem>
                         )}
                       />
-                      
+
                       <FormField
                         control={competitionForm.control}
                         name="startDate"
@@ -733,7 +735,7 @@ export default function AdminCompetitions() {
                           </FormItem>
                         )}
                       />
-                      
+
                       <FormField
                         control={competitionForm.control}
                         name="endDate"
@@ -756,7 +758,7 @@ export default function AdminCompetitions() {
                         )}
                       />
                     </div>
-                    
+
                     <DialogFooter>
                       <Button 
                         type="submit" 
@@ -773,7 +775,7 @@ export default function AdminCompetitions() {
             </Dialog>
           </div>
         </div>
-        
+
         <Card>
           <CardHeader>
             <CardTitle>赛事列表</CardTitle>
@@ -836,7 +838,7 @@ export default function AdminCompetitions() {
                         </TableCell>
                       </TableRow>
                     ))}
-                    
+
                     {!competitions || competitions.length === 0 ? (
                       <TableRow>
                         <TableCell colSpan={5} className="text-center py-4 text-muted-foreground">
@@ -850,7 +852,7 @@ export default function AdminCompetitions() {
             )}
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader>
             <CardTitle>赛道管理</CardTitle>
@@ -880,7 +882,7 @@ export default function AdminCompetitions() {
                     </CardContent>
                   </Card>
                 ))}
-                
+
                 {!tracks || tracks.length === 0 ? (
                   <div className="col-span-full flex justify-center items-center py-4 text-muted-foreground">
                     暂无赛道数据
