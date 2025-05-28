@@ -234,22 +234,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // === USERS ROUTES ===
-
-  // Get all users (admin only)
-  // app.get("/api/users", async (req, res) => {
-  //   if (!req.isAuthenticated() || req.user.role !== "admin") {
-  //     return res.status(403).json({ message: "Unauthorized" });
-  //   }
-  //
-  //   try {
-  //     const users = await storage.getAllUsers();
-  //     res.json(users);
-  //   } catch (error) {
-  //     res.status(500).json({ message: "Failed to fetch users" });
-  //   }
-  // });
-
   // Create the HTTP server
   const httpServer = createServer(app);
 
