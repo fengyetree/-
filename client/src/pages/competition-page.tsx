@@ -19,7 +19,7 @@ export default function CompetitionPage() {
 
   const { data: competition, isLoading: isCompetitionLoading } = useQuery<Competition>({
     queryKey: ["competition", competitionId],
-    queryFn: () => competitionService.getCompetition(parseInt(competitionId)),
+    queryFn: () => competitionService.getCompetition(parseInt(competitionId as string)),
     enabled: !!competitionId,
   });
 

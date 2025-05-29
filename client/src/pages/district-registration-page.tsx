@@ -9,11 +9,11 @@ import { Competition } from "@shared/schema";
 import { useAuth } from "@/hooks/use-auth";
 
 export default function DistrictRegistrationPage() {
-  const [, params] = useRoute("/competition/:competitionId/districts/:districtId/register");
+  const [, params] = useRoute("/competition/:competitionId/districts/:districtName/register");
   const [, navigate] = useLocation();
   const { user } = useAuth();
   const competitionId = params?.competitionId;
-  const districtId = params?.districtId;
+  const districtName = params?.districtName;
 
   // TODO: 根据 competitionId 和 districtId 获取赛区详细信息和比赛信息
   // 可以复用获取比赛信息的 useQuery
@@ -29,7 +29,6 @@ export default function DistrictRegistrationPage() {
   // });
 
   const competitionTitle = competition?.title || "加载中...";
-  const districtName = `赛区 ${districtId}`; // TODO: 使用实际赛区名称
 
    const handleRegister = async (e: React.MouseEvent) => {
     // 检查是否有token
@@ -95,7 +94,7 @@ export default function DistrictRegistrationPage() {
         <div className="container mx-auto px-4">
             <Button
                 variant="ghost"
-                onClick={() => navigate(`/competition/${competitionId}/districts`)} // 返回到赛区列表页
+                onClick={() => navigate(`/competition/${competitionId}/districts`)}
                 className="mb-6"
             >
                 <ArrowLeft className="mr-2 h-4 w-4" />
@@ -116,7 +115,7 @@ export default function DistrictRegistrationPage() {
             <p>这里将是赛区详情和具体的报名表单。</p>
             {/* 示例：添加一个简单的报名按钮 */}
              <Button className="mt-4 bg-[#1E88E5]"  onClick={handleRegister}>
-                提交报名
+                立即报名
              </Button>
           </div>
 

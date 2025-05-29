@@ -45,11 +45,11 @@ export default function CompetitionDistrictsPage() {
         <div className="container mx-auto px-4 mb-8">
             <Button
                 variant="ghost"
-                onClick={() => navigate(`/#saicheng`)} // 返回到主页并定位到"正在报名的赛事"
+                onClick={() => navigate(`/competition/${competitionId}/map`)} // 返回到地图页面
                 className="mb-6"
             >
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                返回主页
+                返回地图
             </Button>
           <div className="bg-white rounded-lg p-6 shadow-md">
             <h1 className="text-2xl md:text-3xl font-bold text-[#333333] mb-4">
@@ -68,7 +68,7 @@ export default function CompetitionDistrictsPage() {
               districts.map((district) => (
                 <Card key={district.id}>
                   <CardContent className="p-6">
-                    <Link href={`/competition/${competitionId}/districts/${district.id}/register`}>
+                    <Link href={`/competition/${competitionId}/districts/${encodeURIComponent(district.name)}/register`}>
                       <a>
                     <div className="flex items-center mb-4">
                         <MapPin className="h-6 w-6 text-[#1E88E5] mr-3" />

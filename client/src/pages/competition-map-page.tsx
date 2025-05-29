@@ -92,17 +92,19 @@ const data = [
 
 
 export default function CompetitionMapPage() {
-  // const [, params] = useRoute("/competition/:id");
   const [, params] = useRoute("/competition/:id/map");
-  const competitionId = params?.id;
   const [, navigate] = useLocation();
-  const chartRef = useRef<HTMLDivElement>(null);
-  const chartInstance = useRef<EChartsType | null>(null);
+  const competitionId = params?.id;
 
   const { data: competition } = useQuery<Competition>({
     queryKey: [`/api/competitions/${competitionId}`],
     enabled: !!competitionId,
   });
+
+  const competitionTitle = competition?.title || "加载中...";
+
+  const chartRef = useRef<HTMLDivElement>(null);
+  const chartInstance = useRef<EChartsType | null>(null);
 
   useEffect(() => {
     if (chartRef.current) {
@@ -177,9 +179,9 @@ export default function CompetitionMapPage() {
       myChart.on('click', function (params: any) {
         // params.name 是点击的区域名称（省份名称）
         console.log('点击了区域:', params.name);
-        // TODO: 根据点击的省份名称找到对应的赛区比赛 ID
-        // 目前只是简单跳转到赛区列表页
-        navigate(`/competition/${competitionId}/districts`);
+        // 根据点击的省份名称构建导航路径
+        const districtName = params.name;
+        navigate(`/competition/${competitionId}/districts/${encodeURIComponent(districtName)}`);
       });
 
       // 组件卸载时销毁图表实例
@@ -192,14 +194,11 @@ export default function CompetitionMapPage() {
     }
   }, [competitionId, navigate]); // 添加依赖项
 
-  // TODO: 根据实际情况获取比赛名称
-  const competitionName = competition?.title || '加载中...';
-
   return (
     <>
       <Helmet>
-        <title>{competitionName} 赛区地图 - 全国高校大学生竞赛平台</title>
-        <meta name="description" content={`查看 ${competitionName} 的赛区地图分布。`} />
+        <title>{competitionTitle} 赛区地图 - 全国高校大学生竞赛平台</title>
+        <meta name="description" content={`查看 ${competitionTitle} 的赛区地图分布。`} />
       </Helmet>
       <Navbar />
 
@@ -215,7 +214,7 @@ export default function CompetitionMapPage() {
             </Button>
           <div className="bg-white rounded-lg p-6 shadow-md mb-8">
             <h1 className="text-2xl md:text-3xl font-bold text-[#333333] mb-4">
-              {competitionName} - 赛区地图
+              {competitionTitle} - 赛区地图
             </h1>
             <p className="text-gray-600">
               点击地图上的区域，查看该赛区的详细信息或进行报名。

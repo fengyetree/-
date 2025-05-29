@@ -51,12 +51,12 @@ export default function FeaturedCompetitions({ competitions: propCompetitions }:
               <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer flex flex-col h-full">
                 {competition.imageUrl && (
                   <div className="relative w-full h-48">
-                    <img
+              <img 
                       src={competition.imageUrl}
-                      alt={competition.title}
+                alt={competition.title} 
                       className="w-full h-full object-cover"
-                    />
-                  </div>
+              />
+                </div>
                 )}
                 <CardContent className="p-6 flex flex-col flex-grow">
                   <h3 className="text-xl font-bold text-[#333333] mb-2">
@@ -78,7 +78,7 @@ export default function FeaturedCompetitions({ competitions: propCompetitions }:
                   </div>
                 </CardContent>
               </Card>
-            </Link>
+                  </Link>
           ))}
         </div>
         

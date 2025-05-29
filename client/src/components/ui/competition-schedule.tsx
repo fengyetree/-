@@ -7,25 +7,39 @@ const scheduleStages = [
   {
     id: 1,
     stage: "报名阶段",
-    title: "项目报名与审核",
+    title: "参赛报名",
     description: "开放所有赛道报名通道，提交项目计划书进行资格审核"
   },
   {
     id: 2,
-    stage: "初赛阶段",
-    title: "初赛评审与筛选",
+    stage: "分赛区赛题公布时期",
+    title: "公布分赛区赛题",
     description: "各赛道专家评审团对项目进行初步评估，选拔优秀项目进入复赛"
   },
   {
     id: 3,
-    stage: "复赛阶段",
-    title: "项目展示与答辩",
+    stage: "提交作品阶段",
+    title: "作品提交",
     description: "复赛团队进行线上项目展示与答辩，展现项目价值与可行性"
   },
   {
     id: 4,
-    stage: "决赛阶段",
-    title: "全国总决赛",
+    stage: "分赛区评审结果公布时间",
+    title: "公布分赛区评审结果",
+    description: "优秀团队齐聚北京，进行现场路演与展示，角逐全国总冠军"
+  }
+  ,
+  {
+    id: 5,
+    stage: "全国赛网评结果公布时间",
+    title: "公布全国赛网评结果",
+    description: "优秀团队齐聚北京，进行现场路演与展示，角逐全国总冠军"
+  }
+  ,
+  {
+    id: 6,
+    stage: "全国赛现场答辩赛时间",
+    title: "全国赛现场答辩",
     description: "优秀团队齐聚北京，进行现场路演与展示，角逐全国总冠军"
   }
 ];
@@ -76,10 +90,12 @@ export default function CompetitionSchedule() {
       // 暂时返回模拟数据，等API准备好后可以替换
       return {
         stages: [
-          { stageId: 1, dateRange: "9月1日 - 10月15日" },
-          { stageId: 2, dateRange: "10月20日 - 11月5日" },
-          { stageId: 3, dateRange: "11月15日 - 12月5日" },
-          { stageId: 4, dateRange: "12月20日 - 12月22日" }
+          { stageId: 1, dateRange: "6月1日 - 6月30日" },
+          { stageId: 2, dateRange: "6月1日 - 7月10日" },
+          { stageId: 3, dateRange: "9月14日24时前" },
+          { stageId: 4, dateRange: "2025年9月30日" },
+          { stageId: 5, dateRange: "2025年10月26日" },
+          { stageId: 6, dateRange: "2025年11月22日-23日" }
         ],
         districts: [
           { region: "north", registrationDates: "2023-09-01 ~ 09-20", preliminaryDates: "2023-10-10 ~ 10-15", finalDate: "2023-12-10" },

@@ -1,4 +1,3 @@
-
 import { Switch, Route } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@/lib/queryClient";
@@ -37,9 +36,11 @@ function App() {
             <Route path="/tracks" component={TracksList} />
             <Route path="/track/:id" component={TrackDetails} />
             <Route path="/case/:id" component={CaseDetails} />
-            <Route path="/competition-map" component={CompetitionMapPage} />
+            <Route path="/competition/:id/map" component={CompetitionMapPage} />
             <Route path="/universities" component={AllUniversitiesPage} />
-            <Route path="/districts" component={CompetitionDistrictsPage} />
+            <Route path="/competition/:id/districts" component={CompetitionDistrictsPage} />
+            <Route path="/competition/:id/districts/:districtName" component={CompetitionDistrictsPage} />
+            <Route path="/competition/:id/districts/:districtName/register" component={DistrictRegistrationPage} />
             <Route path="/district-registration/:district" component={DistrictRegistrationPage} />
             
             {/* Admin routes */}

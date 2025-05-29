@@ -18,9 +18,9 @@ export default function LatestNews() {
         </div>
 
         {/* Right Column for News List */}
-        <div className="md:w-1/2 flex flex-col justify-between h-full">
+        <div className="md:w-1/2 flex flex-col justify-between h-[100px]">
           {newsList.map((news, idx) => (
-            <div key={idx} className="bg-gradient-to-br from-blue-100 to-blue-50 rounded-xl shadow-lg pt-2 px-6 pb-6 hover:scale-105 transition flex-grow h-[110px]">
+            <div key={idx} className="bg-gradient-to-br from-blue-100 to-blue-50 rounded-xl shadow-lg pt-2 px-6 pb-6 hover:scale-105 transition flex-grow">
               <div className="text-sm text-blue-500 mb-2 ">{news.date}</div>
               <h3 className="text-lg font-bold mb-2 text-blue-800 whitespace-nowrap overflow-hidden text-ellipsis">{news.title}</h3>
               <p className="text-gray-700">{news.desc}</p>
