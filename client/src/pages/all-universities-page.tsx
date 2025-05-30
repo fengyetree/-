@@ -1,8 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
 import { Helmet } from "react-helmet";
-import Navbar from "@/components/layout/navbar";
-import Footer from "@/components/layout/footer";
 import { User, universities as defaultUniversities } from "@shared/schema";
 import { Loader2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -18,11 +16,9 @@ export default function AllUniversitiesPage() {
   if (isLoading) {
     return (
       <>
-        <Navbar />
         <div className="container mx-auto py-16 px-4 flex justify-center">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>
-        <Footer />
       </>
     );
   }
@@ -33,7 +29,7 @@ export default function AllUniversitiesPage() {
         <title>全部参赛院校 - 全国高校大学生竞赛平台</title>
         <meta name="description" content="查看所有参加全国高校大学生竞赛平台的院校列表。" />
       </Helmet>
-      <Navbar />
+      {/* <Navbar /> */}
 
       <main className="bg-[#F5F5F5] min-h-screen py-12">
         <div className="container mx-auto px-4">
@@ -71,8 +67,6 @@ export default function AllUniversitiesPage() {
           </div>
         </div>
       </main>
-
-      <Footer />
     </>
   );
 } 

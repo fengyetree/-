@@ -42,7 +42,7 @@ export default function CompetitionPage() {
   if (isCompetitionLoading) {
     return (
       <>
-        <Navbar />
+        {/* <Navbar /> */}
         <div className="container mx-auto py-16 px-4 flex justify-center">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>
@@ -54,7 +54,7 @@ export default function CompetitionPage() {
   if (!competition) {
     return (
       <>
-        <Navbar />
+        {/* <Navbar /> */}
         <div className="container mx-auto py-16 px-4">
           <div className="text-center">
             <h1 className="text-2xl font-bold mb-4">赛事不存在</h1>
@@ -72,20 +72,8 @@ export default function CompetitionPage() {
   }
 
   return (
-    <div className="relative">
-      <button
-        onClick={() => navigate(`/competition/${competitionId}/districts`)}
-        className="absolute top-4 left-4 bg-white rounded-full shadow-lg border border-blue-200 p-3 hover:bg-blue-100 hover:text-[#1E88E5] transition z-50 text-lg font-bold text-[#333]"
-        style={{ boxShadow: '0 4px 16px rgba(30,136,229,0.10)' }}
-      >
-        返回赛区选择
-      </button>
-      <Helmet>
-        <title>{competition.title} - 全国高校大学生竞赛平台</title>
-        <meta name="description" content={competition.description || `查看${competition.title}详情并参与报名。全国高校大学生竞赛平台为全国大学生提供优质竞赛服务。`} />
-      </Helmet>
-      <Navbar />
-
+    <>
+      {/* <Navbar /> */}
       <main className="bg-[#F5F5F5] min-h-screen">
         {/* Hero Banner */}
         <div 
@@ -252,6 +240,6 @@ export default function CompetitionPage() {
       </main>
 
       <Footer />
-    </div>
+    </>
   );
 }

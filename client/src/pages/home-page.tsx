@@ -1,4 +1,3 @@
-import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import HeroSection from "@/components/ui/hero-section";
 import CompetitionTracks from "@/components/ui/competition-tracks";
@@ -36,26 +35,25 @@ export default function HomePage() {
   return (
     <>
       <Helmet>
-        <title>全国高校大学生竞赛平台 - 汇聚青春智慧，点燃创新梦想</title>
-        <meta name="description" content="全国高校大学生竞赛平台为全国大学生提供创新创业、人工智能等多元化赛道的竞赛报名和管理服务。立即参与，展示你的创新才华！" />
+        <title>全国高校大学生竞赛平台</title>
+        <meta name="description" content="全国高校大学生竞赛平台是大学生展示创新能力、参与学术交流、实现自我价值的重要舞台。" />
       </Helmet>
-      <Navbar />
-      <div className="relative">
-        <main className="w-full">
-          <section id="baoming"><HeroSection /></section>
-          <section id="saidao"><CompetitionTracks tracks={tracks?.map(track => ({ ...track, description: track.description || '', icon: track.icon || '' })) || []} /></section>
-          <section id="xuanchuan"><CompetitionSchedule /></section>
-          <section id="saicheng" className="py-16 bg-white">
-            <div className="container mx-auto px-4 h-full flex items-center justify-center relative z-10 text-white">
-              <FeaturedCompetitions competitions={featuredCompetitions} />
-            </div>
-          </section>
-          <section id="dongtai"><LatestNews /></section>
-          <section id="wangjie"><PreviousCompetitions /></section>
-          <section id="jiangli"><Universities /></section>
-        </main>
-        <SideNav />
-      </div>
+      {/* <Navbar /> */}
+      
+      <main className="bg-[#F5F5F5] min-h-screen">
+        <section id="baoming"><HeroSection /></section>
+        <section id="saidao"><CompetitionTracks tracks={tracks?.map(track => ({ ...track, description: track.description || '', icon: track.icon || '' })) || []} /></section>
+        <section id="xuanchuan"><CompetitionSchedule /></section>
+        <section id="saicheng" className="py-16 bg-white">
+          <div className="container mx-auto px-4 h-full flex items-center justify-center relative z-10 text-white">
+            <FeaturedCompetitions competitions={featuredCompetitions} />
+          </div>
+        </section>
+        <section id="dongtai"><LatestNews /></section>
+        <section id="wangjie"><PreviousCompetitions /></section>
+        <section id="jiangli"><Universities /></section>
+      </main>
+      <SideNav />
       <div id="lianxi">
         <Footer />
       </div>

@@ -1,7 +1,5 @@
 import { useRoute, Link, useLocation } from "wouter";
 import { Helmet } from "react-helmet";
-import Navbar from "@/components/layout/navbar";
-import Footer from "@/components/layout/footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, MapPin, ArrowLeft } from "lucide-react"; // 导入 ArrowLeft 图标
@@ -38,7 +36,7 @@ export default function CompetitionDistrictsPage() {
         <title>{competitionTitle} 赛区列表 - 全国高校大学生竞赛平台</title>
         <meta name="description" content={`查看 ${competitionTitle} 的不同赛区详细信息和时间安排。`} />
       </Helmet>
-      <Navbar />
+      {/* <Navbar /> */}
 
       <main className="bg-[#F5F5F5] min-h-screen py-12">
         {/* Header Section */}
@@ -103,8 +101,6 @@ export default function CompetitionDistrictsPage() {
           </div>
         </div>
       </main>
-
-      <Footer />
     </>
   );
 } 

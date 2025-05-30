@@ -1,6 +1,5 @@
 import { useRoute, useLocation } from "wouter";
 import { Helmet } from "react-helmet";
-import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
@@ -200,7 +199,7 @@ export default function CompetitionMapPage() {
         <title>{competitionTitle} 赛区地图 - 全国高校大学生竞赛平台</title>
         <meta name="description" content={`查看 ${competitionTitle} 的赛区地图分布。`} />
       </Helmet>
-      <Navbar />
+      {/* <Navbar /> */}
 
       <main className="bg-[#F5F5F5] min-h-screen py-12">
         <div className="container mx-auto px-4">

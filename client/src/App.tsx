@@ -16,6 +16,7 @@ import AllUniversitiesPage from "@/pages/all-universities-page";
 import CompetitionDistrictsPage from "@/pages/competition-districts-page";
 import DistrictRegistrationPage from "@/pages/district-registration-page";
 import NotFound from "@/pages/not-found";
+import NewsDetailPage from "@/pages/news-detail-page";
 
 // Admin pages
 import AdminLayout from "@/pages/admin/layout";
@@ -42,6 +43,7 @@ function App() {
             <Route path="/competition/:id/districts/:districtName" component={CompetitionDistrictsPage} />
             <Route path="/competition/:id/districts/:districtName/register" component={DistrictRegistrationPage} />
             <Route path="/district-registration/:district" component={DistrictRegistrationPage} />
+            <Route path="/news/:newsId" component={NewsDetailPage} />
             
             {/* Admin routes */}
             <Route path="/admin" nest>

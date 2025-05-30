@@ -88,7 +88,7 @@ export default function DistrictRegistrationPage() {
         <title>{competitionTitle} - {districtName} 报名 - 全国高校大学生竞赛平台</title>
         <meta name="description" content={`报名参与 ${competitionTitle} 的 ${districtName} 赛区。`} />
       </Helmet>
-      <Navbar />
+      {/* <Navbar /> */}
 
       <main className="bg-[#F5F5F5] min-h-screen py-12">
         <div className="container mx-auto px-4">
