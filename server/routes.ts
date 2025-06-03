@@ -1,19 +1,32 @@
+/**
+ * 路由配置文件
+ * 该文件定义了所有API端点的路由处理逻辑
+ */
+
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth } from "./auth";
-import { hashPassword } from "./auth"; // Import hashPassword function
+import { hashPassword } from "./auth"; // 导入密码哈希函数
 import z from 'zod';
 import { insertUserSchema, insertCompetitionSchema, insertTrackSchema, insertRegistrationSchema } from "@shared/schema";
 
+/**
+ * 注册所有路由
+ * @param app Express应用实例
+ * @returns HTTP服务器实例
+ */
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Set up authentication routes
+  // 设置认证相关路由
   setupAuth(app);
 
-  // === COMPETITIONS ROUTES ===
+  // === 竞赛相关路由 ===
 
-  // Get all competitions
-  app.get("/api/competitions", async (req, res) => {
+  /**
+   * 获取所有竞赛列表
+   * GET /api/competitions
+   */
+  app.get("/api/competition/race/list", async (req, res) => {
     try {
       const competitions = await storage.getAllCompetitions();
       res.json(competitions);
@@ -22,7 +35,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get a specific competition
+  /**
+   * 获取特定竞赛详情
+   * GET /api/competitions/:id
+   */
   app.get("/api/competitions/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
@@ -38,7 +54,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Create a competition (admin only)
+  /**
+   * 创建新竞赛（仅管理员）
+   * POST /api/competitions
+   */
   app.post("/api/competitions", async (req, res) => {
     if (!req.isAuthenticated() || req.user.role !== "admin") {
       return res.status(403).json({ message: "Unauthorized" });
@@ -56,7 +75,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Update a competition (admin only)
+  /**
+   * 更新竞赛信息（仅管理员）
+   * PATCH /api/competitions/:id
+   */
   app.patch("/api/competitions/:id", async (req, res) => {
     if (!req.isAuthenticated() || req.user.role !== "admin") {
       return res.status(403).json({ message: "Unauthorized" });
@@ -80,7 +102,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Delete a competition (admin only)
+  /**
+   * 删除竞赛（仅管理员）
+   * DELETE /api/competitions/:id
+   */
   app.delete("/api/competitions/:id", async (req, res) => {
     if (!req.isAuthenticated() || req.user.role !== "admin") {
       return res.status(403).json({ message: "Unauthorized" });
@@ -95,9 +120,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // === TRACKS ROUTES ===
+  // === 赛道相关路由 ===
 
-  // Get all tracks
+  /**
+   * 获取所有赛道列表
+   * GET /api/tracks
+   */
   app.get("/api/tracks", async (req, res) => {
     try {
       const tracks = await storage.getAllTracks();
@@ -107,7 +135,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get a specific track
+  /**
+   * 获取特定赛道详情
+   * GET /api/tracks/:id
+   */
   app.get("/api/tracks/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
@@ -123,7 +154,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Create a track (admin only)
+  /**
+   * 创建新赛道（仅管理员）
+   * POST /api/tracks
+   */
   app.post("/api/tracks", async (req, res) => {
     if (!req.isAuthenticated() || req.user.role !== "admin") {
       return res.status(403).json({ message: "Unauthorized" });
@@ -141,9 +175,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // === TIMELINE ROUTES ===
+  // === 时间线相关路由 ===
 
-  // Get competition timeline (时间数据API接口)
+  /**
+   * 获取竞赛时间线数据
+   * GET /api/competition-timeline
+   * 返回竞赛各阶段时间安排和赛区时间安排
+   */
   app.get("/api/competition-timeline", async (req, res) => {
     try {
       // 这里可以从数据库获取实际的时间数据
@@ -169,9 +207,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // === REGISTRATIONS ROUTES ===
+  // === 报名相关路由 ===
 
-  // Get all registrations (admin only)
+  /**
+   * 获取所有报名记录（仅管理员）
+   * GET /api/registrations
+   */
   app.get("/api/registrations", async (req, res) => {
     if (!req.isAuthenticated() || req.user.role !== "admin") {
       return res.status(403).json({ message: "Unauthorized" });
@@ -185,7 +226,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Check if user is registered for a competition
+  /**
+   * 检查用户是否已报名特定竞赛
+   * GET /api/registrations/check/:competitionId
+   */
   app.get("/api/registrations/check/:competitionId", async (req, res) => {
     if (!req.isAuthenticated()) {
       return res.status(401).json({ message: "Unauthorized" });
@@ -202,7 +246,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Register for a competition
+  /**
+   * 创建新的报名记录
+   * POST /api/registrations
+   */
   app.post("/api/registrations", async (req, res) => {
     if (!req.isAuthenticated()) {
       return res.status(401).json({ message: "Unauthorized" });
@@ -211,12 +258,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const registrationData = insertRegistrationSchema.parse(req.body);
 
-      // Ensure the user can only register themselves
+      // 确保用户只能为自己报名
       if (registrationData.userId !== req.user.id) {
         return res.status(403).json({ message: "You can only register yourself" });
       }
 
-      // Check if already registered
+      // 检查是否已经报名
       const isRegistered = await storage.checkRegistration(
         registrationData.userId,
         registrationData.competitionId
@@ -236,7 +283,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Update registration status (admin only)
+  /**
+   * 更新报名状态（仅管理员）
+   * PATCH /api/registrations/:id
+   */
   app.patch("/api/registrations/:id", async (req, res) => {
     if (!req.isAuthenticated() || req.user.role !== "admin") {
       return res.status(403).json({ message: "Unauthorized" });
@@ -251,24 +301,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const registration = await storage.updateRegistrationStatus(id, status);
-
-      if (!registration) {
-        return res.status(404).json({ message: "Registration not found" });
-      }
-
       res.json(registration);
     } catch (error) {
-      res.status(500).json({ message: "Failed to update registration" });
+      res.status(500).json({ message: "Failed to update registration status" });
     }
   });
 
-  // Create the HTTP server
-  const httpServer = createServer(app);
-
-  // Initialize the database with default data if needed
-  await initializeData();
-
-  return httpServer;
+  // 创建并返回HTTP服务器实例
+  return createServer(app);
 }
 
 // Function to initialize the database with default data
@@ -329,7 +369,7 @@ async function initializeData() {
 
         await storage.createCompetition({
           title: "2025年（第二届）大学生数据要素素质大赛",
-          description: "为深入贯彻中央《提升全民数字素养与技能行动纲要》及《2024年提升全民数字素养与技能工作要点》等一系列文件精神，积极响应国家经济社会数字化转型的迫切需求，加速培养具备高水平数据素养的复合型人才，由全国数据工程教学联盟发起举办“2024年大学生数据要素素质大赛”。",
+          description: "为深入贯彻中央《提升全民数字素养与技能行动纲要》及《2024年提升全民数字素养与技能工作要点》等一系列文件精神，积极响应国家经济社会数字化转型的迫切需求，加速培养具备高水平数据素养的复合型人才，由全国数据工程教学联盟发起举办"2024年大学生数据要素素质大赛"。",
           imageUrl: "https://obs-cq.cucloud.cn/zeno-videofile/files/20240603/0008a5be-2394-4b60-8a4b-86546e633a85.png",
           trackId: trackId,
           registrationDeadline: new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
