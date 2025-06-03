@@ -41,6 +41,10 @@ async function comparePasswords(supplied: string, stored: string) {
 }
 
 export function setupAuth(app: Express) {
+  // const token = localStorage.getItem('token');
+  // app.set('Authorization', `Bearer ${token}`);
+  
+
   const sessionSecret = process.env.SESSION_SECRET || "campus-competition-platform-secret";
 
   const sessionSettings: session.SessionOptions = {
