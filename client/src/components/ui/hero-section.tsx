@@ -24,24 +24,6 @@ export default function HeroSection() {
               </Button>
             </Link>
           </div>
-          <div className="mt-8 flex justify-center space-x-8 text-white">
-            <div className="text-center">
-              <div className="text-3xl font-bold">32</div>
-              <div className="text-sm">参赛院校</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold">528</div>
-              <div className="text-sm">参赛团队</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold">12</div>
-              <div className="text-sm">赛道项目</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold">￥50万</div>
-              <div className="text-sm">总奖金</div>
-            </div>
-          </div>
         </div>
       </div>
     </section>

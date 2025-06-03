@@ -2,7 +2,7 @@
  * 路由配置文件
  * 该文件定义了所有API端点的路由处理逻辑
  */
-
+import axios from "axios";
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
@@ -24,13 +24,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   /**
    * 获取所有竞赛列表
-   * GET /api/competitions
    */
-  app.get("/api/competition/race/list", async (req, res) => {
+  app.get("/competition/race/list", async (req, res) => {
     try {
+      // 调用 storage 模块的方法从数据库获取所有竞赛列表
       const competitions = await storage.getAllCompetitions();
       res.json(competitions);
     } catch (error) {
+      console.error("Error fetching competitions:", error); // 记录错误日志
       res.status(500).json({ message: "Failed to fetch competitions" });
     }
   });
@@ -39,7 +40,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
    * 获取特定竞赛详情
    * GET /api/competitions/:id
    */
-  app.get("/api/competitions/:id", async (req, res) => {
+  app.get("/api/competition/race/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
       const competition = await storage.getCompetition(id);
@@ -58,67 +59,67 @@ export async function registerRoutes(app: Express): Promise<Server> {
    * 创建新竞赛（仅管理员）
    * POST /api/competitions
    */
-  app.post("/api/competitions", async (req, res) => {
-    if (!req.isAuthenticated() || req.user.role !== "admin") {
-      return res.status(403).json({ message: "Unauthorized" });
-    }
+  // app.post("/api/competitions", async (req, res) => {
+  //   if (!req.isAuthenticated() || req.user.role !== "admin") {
+  //     return res.status(403).json({ message: "Unauthorized" });
+  //   }
 
-    try {
-      const competitionData = insertCompetitionSchema.parse(req.body);
-      const competition = await storage.createCompetition(competitionData);
-      res.status(201).json(competition);
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({ message: "Invalid competition data", errors: error.errors });
-      }
-      res.status(500).json({ message: "Failed to create competition" });
-    }
-  });
+  //   try {
+  //     const competitionData = insertCompetitionSchema.parse(req.body);
+  //     const competition = await storage.createCompetition(competitionData);
+  //     res.status(201).json(competition);
+  //   } catch (error) {
+  //     if (error instanceof z.ZodError) {
+  //       return res.status(400).json({ message: "Invalid competition data", errors: error.errors });
+  //     }
+  //     res.status(500).json({ message: "Failed to create competition" });
+  //   }
+  // });
 
   /**
    * 更新竞赛信息（仅管理员）
    * PATCH /api/competitions/:id
    */
-  app.patch("/api/competitions/:id", async (req, res) => {
-    if (!req.isAuthenticated() || req.user.role !== "admin") {
-      return res.status(403).json({ message: "Unauthorized" });
-    }
+  // app.patch("/api/competitions/:id", async (req, res) => {
+  //   if (!req.isAuthenticated() || req.user.role !== "admin") {
+  //     return res.status(403).json({ message: "Unauthorized" });
+  //   }
 
-    try {
-      const id = parseInt(req.params.id);
-      const competitionData = insertCompetitionSchema.parse(req.body);
-      const competition = await storage.updateCompetition(id, competitionData);
+  //   try {
+  //     const id = parseInt(req.params.id);
+  //     const competitionData = insertCompetitionSchema.parse(req.body);
+  //     const competition = await storage.updateCompetition(id, competitionData);
 
-      if (!competition) {
-        return res.status(404).json({ message: "Competition not found" });
-      }
+  //     if (!competition) {
+  //       return res.status(404).json({ message: "Competition not found" });
+  //     }
 
-      res.json(competition);
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({ message: "Invalid competition data", errors: error.errors });
-      }
-      res.status(500).json({ message: "Failed to update competition" });
-    }
-  });
+  //     res.json(competition);
+  //   } catch (error) {
+  //     if (error instanceof z.ZodError) {
+  //       return res.status(400).json({ message: "Invalid competition data", errors: error.errors });
+  //     }
+  //     res.status(500).json({ message: "Failed to update competition" });
+  //   }
+  // });
 
-  /**
-   * 删除竞赛（仅管理员）
-   * DELETE /api/competitions/:id
-   */
-  app.delete("/api/competitions/:id", async (req, res) => {
-    if (!req.isAuthenticated() || req.user.role !== "admin") {
-      return res.status(403).json({ message: "Unauthorized" });
-    }
+  // /**
+  //  * 删除竞赛（仅管理员）
+  //  * DELETE /api/competitions/:id
+  //  */
+  // app.delete("/api/competitions/:id", async (req, res) => {
+  //   if (!req.isAuthenticated() || req.user.role !== "admin") {
+  //     return res.status(403).json({ message: "Unauthorized" });
+  //   }
 
-    try {
-      const id = parseInt(req.params.id);
-      await storage.deleteCompetition(id);
-      res.status(204).send();
-    } catch (error) {
-      res.status(500).json({ message: "Failed to delete competition" });
-    }
-  });
+  //   try {
+  //     const id = parseInt(req.params.id);
+  //     await storage.deleteCompetition(id);
+  //     res.status(204).send();
+  //   } catch (error) {
+  //     res.status(500).json({ message: "Failed to delete competition" });
+  //   }
+  // });
 
   // === 赛道相关路由 ===
 
@@ -287,25 +288,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
    * 更新报名状态（仅管理员）
    * PATCH /api/registrations/:id
    */
-  app.patch("/api/registrations/:id", async (req, res) => {
-    if (!req.isAuthenticated() || req.user.role !== "admin") {
-      return res.status(403).json({ message: "Unauthorized" });
-    }
+  // app.patch("/api/registrations/:id", async (req, res) => {
+  //   if (!req.isAuthenticated() || req.user.role !== "admin") {
+  //     return res.status(403).json({ message: "Unauthorized" });
+  //   }
 
-    try {
-      const id = parseInt(req.params.id);
-      const { status } = req.body;
+  //   try {
+  //     const id = parseInt(req.params.id);
+  //     const { status } = req.body;
 
-      if (!["pending", "approved", "rejected"].includes(status)) {
-        return res.status(400).json({ message: "Invalid status" });
-      }
+  //     if (!["pending", "approved", "rejected"].includes(status)) {
+  //       return res.status(400).json({ message: "Invalid status" });
+  //     }
 
-      const registration = await storage.updateRegistrationStatus(id, status);
-      res.json(registration);
-    } catch (error) {
-      res.status(500).json({ message: "Failed to update registration status" });
-    }
-  });
+  //     const registration = await storage.updateRegistrationStatus(id, status);
+  //     res.json(registration);
+  //   } catch (error) {
+  //     res.status(500).json({ message: "Failed to update registration status" });
+  //   }
+  // });
 
   // 创建并返回HTTP服务器实例
   return createServer(app);
@@ -332,22 +333,22 @@ async function initializeData() {
     const tracks = await storage.getAllTracks();
     if (!tracks || tracks.length === 0) {
       const defaultTracks = [
-        {
+        { // 创新创业赛道
           name: "创新创业赛道",
           description: "针对具有市场潜力和商业价值的创新项目和创业计划",
           icon: "fas fa-lightbulb"
         },
-        {
+        { // 人工智能赛道
           name: "人工智能赛道",
           description: "专注于人工智能技术在各领域的创新应用和解决方案",
           icon: "fas fa-laptop-code"
         },
-        {
+        { // 乡村振兴赛道
           name: "乡村振兴赛道",
           description: "围绕乡村振兴战略，提出创新方案和实践项目",
           icon: "fas fa-leaf"
         },
-        {
+        { // 生物医学赛道
           name: "生物医学赛道",
           description: "聚焦生物医学科技创新，提升健康医疗水平的项目",
           icon: "fas fa-flask"
@@ -369,7 +370,7 @@ async function initializeData() {
 
         await storage.createCompetition({
           title: "2025年（第二届）大学生数据要素素质大赛",
-          description: "为深入贯彻中央《提升全民数字素养与技能行动纲要》及《2024年提升全民数字素养与技能工作要点》等一系列文件精神，积极响应国家经济社会数字化转型的迫切需求，加速培养具备高水平数据素养的复合型人才，由全国数据工程教学联盟发起举办"2024年大学生数据要素素质大赛"。",
+          description: "为深入贯彻中央《提升全民数字素养与技能行动纲要》及《2024年提升全民数字素养与技能工作要点》等一系列文件精神，积极响应国家经济社会数字化转型的迫切需求，加速培养具备高水平数据素养的复合型人才，由全国数据工程教学联盟发起举办'2024年大学生数据要素素质大赛'。",
           imageUrl: "https://obs-cq.cucloud.cn/zeno-videofile/files/20240603/0008a5be-2394-4b60-8a4b-86546e633a85.png",
           trackId: trackId,
           registrationDeadline: new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
